@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>smeasly.net</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='style/index.css') }}">
+    <style>
+        /* Inline for this page only */
+        .img-nav {
+            width: max-content;
+            height: max-content;
+            position: relative;
+            width: 800px;
+            height: 800px;
+            background-size: 800px 800px;
+            background-image: url("{{ url_for('static', filename='img/elements/index_placeholder.png') }}");
+        }
+        .img-nav a {
+            display: block;
+            font-size: 2em;
+            position: absolute;
+            width: max-content;
+            height: min-content;
+            border-radius: var(--std-border-radius);
+            transition: var(--std-transition);
+            text-decoration: none;
+            text-shadow: 2px 2px 2px #000;
+            padding: var(--primary-padding);
+        }
+        .img-nav a:hover {
+            background-color: aqua;
+            cursor: pointer;
+            color: red;
+            text-shadow: violet;
+            box-shadow: var(--box-soft-glow) aqua;
+        }
+        a.projects{
+            top: calc(100px - 15px - var(--primary-padding));
+            left: calc(225px - var(--primary-padding));
+        }
+        a.art{
+            top: calc(225px - 15px - var(--primary-padding));
+            left: calc(100px - var(--primary-padding));
+        }
+        a.blog{
+            top: calc(400px - 15px - var(--primary-padding));
+            left: calc(50px - var(--primary-padding));
+        }
+        a.videos{
+            top: calc(575px - 15px - var(--primary-padding));
+            left: calc(100px - var(--primary-padding));
+        }
+        a.games{
+            top: calc(700px - 15px - var(--primary-padding));
+            left: calc(225px - var(--primary-padding));
+        }
+        a.social{
+            top: calc(400px - 15px - var(--primary-padding));
+            left: calc(355px - var(--primary-padding));
+        }
+        a.about{
+            top: calc(225px - 15px - var(--primary-padding));
+            left: calc(625px - var(--primary-padding));
+        }
+        a.guestbook{
+            top: calc(400px - 15px - var(--primary-padding));
+            left: calc(600px - var(--primary-padding));
+        }
+        a.coolzone{
+            top: calc(575px - 15px - var(--primary-padding));
+            left: calc(550px - var(--primary-padding));
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Flush and hide flashed messages -->
+    <span style="display: none;">{{ get_flashed_messages() }}</span>
+    
+    <header>
+        <!-- Logo, titlebar,  -->
+    </header>
+    
+    <main style="display: flex;">
+        <!-- Main Nav Links -->
+        <section class="center">        
+            <div class="img-nav">
+                <a class="projects" href="#">Projects</a>
+                <a class="art" href="#">Art</a>
+                <a class="blog" href="#">Blog</a>
+                <a class="social" href="#">Social</a>
+                <a class="videos" href="#">Videos</a>
+                <a class="games" href="#">Games</a>
+
+                <a class="about" href="#">About</a>
+                <a class="guestbook" href="{{ url_for('main.guestbook') }}">Guestbook</a>
+                <a class="coolzone" href="#">Cool Zone</a>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <section class="flex-row-wrapper">
+            <ul class="footer-links">
+                <li><a href="#">Code of Conduct</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+            <ul class="footer-links">
+                <li><a href="#">About</a></li>
+                <li><a href="#">Attributions</a></li>
+            </ul>
+            <ul class="footer-links">
+                <li><a href="#">Report an Issue</a></li>
+                <li><a href="https://github.com">GitHub</a></li>
+            </ul>
+        </section>
+    </footer>
+</body>
+
+</html>

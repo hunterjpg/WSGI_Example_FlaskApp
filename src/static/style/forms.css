@@ -1,0 +1,89 @@
+:root {
+    --external-border: 2px inset #dddddd;
+    --internal-border: 1px solid;
+}
+:root.theme-light {
+    --input-box-shadow:
+        inset 0 1px 3px var(--gloss-shadow-color),
+        inset 0 -1px 3px var(--gloss-shadow-color),
+        inset 1px 0 3px var(--gloss-shadow-color),
+        inset -1px 0 3px var(--gloss-shadow-color);
+}
+:root.theme-dark {
+    --input-box-shadow:
+        inset 0 2px 3px var(--body-text-color),
+        inset 0 -2px 3px var(--body-text-color),
+        inset 2px 0 3px var(--body-text-color),
+        inset -2px 0 3px var(--body-text-color);
+}
+
+fieldset {
+    padding: 1rem;
+    margin: 0;
+    display: flex;
+    flex-flow: column;
+}
+
+legend {
+    background-color: var(--primary-color);
+    border-radius: var(--std-border-radius);
+    font-weight: bold;
+    padding: 10px 20px;
+}
+
+legend.highlight {
+    border: var(--external-border);
+    font-weight: bold;
+    font-size: large;
+}
+
+label {
+    align-self: center;
+    font-weight: bold;
+    margin: 5px 0;
+    padding: 1px 10px;
+}
+/* This doesnt seem to work */
+label:required::before {
+    content: '*';
+}
+
+input {
+    color: var(--body-text-color);
+    padding: 8px 12px;
+    border: var(--internal-border);
+    border-radius: var(--tight-border-radius);
+    font-size: 16px;
+    background-color: var(--secondary-color);
+    transition: var(--short-transition);
+}
+
+input:user-invalid {
+    border: solid 1px var(--error-color);
+    background-color: hwb(from var(--error-color) h w b / 0.25);
+}
+
+input:focus {
+    outline: none;
+    box-shadow: var(--input-box-shadow);
+}
+
+
+/* Form Grid */
+form.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns of fieldsets */
+    gap: 0.25em;
+}
+fieldset.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 3fr; /* Two subcolumns, labels in first column, inputs in second column */
+    gap: 1em;
+    border-style: none;
+}
+.grid-checkbox-wrapper {
+    display: grid;
+    /* More space for label, smaller checkbox */
+    grid-template-columns: 2fr 1fr;
+    
+}

@@ -1,0 +1,39 @@
+.table-wrapper {
+    overflow-y: auto;
+    overflow-x: clip; 
+    max-height: 450px;
+    max-width: 100%;
+    height: fit-content;
+    width: fit-content;
+}
+
+.table {
+    table-layout: fixed;
+    width: 100%;
+    background-color: var(--primary-color);
+}
+
+.table-row:nth-child(even) {
+    background-color: var(--secondary-color);
+}
+
+.table-header {
+    padding: 4px;
+    background-color: var(--highlight-color); 
+    min-width: 75px;
+    color: white;
+}
+
+.table-header-cell {
+    padding: 3px;
+    text-align: center;
+}
+
+.table-cell {
+    padding: 2px;
+    min-width: 75px;
+    word-wrap: break-word;
+    border: 1px inset black;
+    text-align: center;
+    font-size: small;
+}

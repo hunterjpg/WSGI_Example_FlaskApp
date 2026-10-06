@@ -1,0 +1,123 @@
+<!-- Jinja Macros -->
+
+{% macro get_message() -%}
+{# Get last flashed message and/or form.errors and display in a primary block #}
+{# {% from 'macros.html' import get_message %} #}
+{# {{ get_message() }} #}
+{# messages should be called as `get_flashed_messages(with_categories=true)` and formerrors as form.errors #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages or formerrors %}
+            <div class="primary">                        
+                {% if messages %}
+                    <div class="{{ messages[0][0] }}">
+                        <span>{{ messages[0][1]|safe }}</span>
+                    </div>
+                {% endif %}     
+                {% if formerrors %}
+                <div class="error">
+                    <ul>
+                    {% for error in form.errors %}
+                        <li>{{ error|safe }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endwith %}
+{%- endmacro %}
+
+
+{% macro get_messages() -%}
+{# Get all flashed messages as an iterated list, apply category style #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {%- for category, message in messages %}       
+                    <li class="{{ category }}">{{ message|safe }}</li>
+                {% endfor -%}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{%- endmacro %}
+
+
+{% macro forumpost(poster, post, type='reply') -%}
+{# poster: User, post: ForumPost, type:str (['reply', 'thread']) #}
+<div class="secondary flex-column-wrapper flex-grid-item">
+    <span class="flex-row-wrapper">
+        <!-- Controls? -->
+    </span>
+
+    <article>
+        <div class="flex-row-wrapper"> 
+            <aside class="items-center">
+                <picture style="float: left;">
+                    {% if poster.avatar %}
+                        <img src="{{ url_for('.uploads', filename='{{ poster.avatar.file_uri }}') }}">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='img/avatars_default/default_avatar_128x.jpg') }}">
+                    {% endif %}
+                </picture>
+                <p style="font-weight: 150;">{{ poster.name|e }}</p>
+            </aside>
+
+            <div class="flex-column-wrapper">
+                {% if type == 'thread' %}
+                    <pre class="primary">
+                        {{ post.title|e }}
+                    </pre>
+                    <hr>
+                {% endif %}
+                <pre class="primary">
+                    {{ post.text|e }}
+                </pre>
+            </div>
+        </div>
+        {% if post.attachments %}
+            <hr>
+            <div class="flex-row-wrapper secondary">
+                {% for attachment in post.attachments %}
+                    <div class="flex-column-wrapper primary">
+                        <picture>
+                            <img src="{{ attachment.file_uri }}">
+                        </picture>
+                        <span>
+                            {{ attachment.title|e }}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </article>
+
+    <span class="flex-row-wrapper">
+        <!-- Controls -->
+    </span>
+</div>
+{%- endmacro %}
+
+
+{% macro announcement(anc) -%}
+{# Get a formatted announcement #}
+<article>
+    <span>Posted by _ at {{ anc.created_date }}</span>
+    <div class="flex-row-wrapper">
+        {% if anc.attachment %}
+            <aside style="max-width: 256px;">
+                <picture>
+                    <img src="{{ anc.attachment.file_uri }}">
+                </picture>
+            </aside>
+        {% endif %}
+        <div class="flex-column-wrapper">
+            <span class="primary">
+                {{ anc.title|safe }}
+            </span>
+            <span class="primary">
+                {{ anc.text|safe }}
+            </span>
+        </div>
+    </div>
+</article>
+{%- endmacro %}

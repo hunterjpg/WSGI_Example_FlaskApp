@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        {% block head %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="robots" content="noarchive, noindex, nofollow, noimageindex">
+        <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='img/favicon.ico') }}">
+        <title>{% block title %}{{ error.code }}: {{ error.name }}{% endblock title %} - smeasly.net</title>
+        <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='style/global.css') }}">
+        <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='style/error.css') }}">
+        {% endblock head %} 
+    </head>
+    
+    <body class="flex-column-wrapper">
+        <header class="items-center">
+            {% block header %}
+            <hgroup style="line-height: 1rem">
+                <h1 style="font-size: 4rem">
+                    {{ error.code }}
+                </h1>
+                <p style="font-size: 2rem; font-weight: bolder">
+                    {{ error.name|safe }}
+                </p>
+            </hgroup>
+            {% endblock header %}
+        </header>
+        <hr>
+        <main class="items-center">
+            
+            {% block main %}
+                <picture>
+                    <img id="randomImage" 
+                    alt="Image: {{ random_image }}"
+                    src="{{ random_image }}">
+                </picture>
+
+                <div>
+                    <p><i>{{ error.description|e }}</i></p>
+                    {% if error.code == 503 and error.retry_after %}
+                        <p>Please retry after {{ error.retry_after|safe }}</p>
+                    {% endif %}
+                </div>
+            {% endblock main %}
+            
+        </main>
+        <hr>
+        <footer class="items-center">
+            
+            {% block footer %}
+                <nav>
+                    <div class="flex-row-wrapper footer-links">
+                        <a href="{{ url_for('main.index') }}">Index</a>
+                        <span>&#x2022;</span>
+                        <a href="#">About</a>
+                    </div>
+                    <br>
+                    <div class="flex-row-wrapper footer-links">
+                        <a href onclick="javascript:history.back()">
+                            Return
+                        </a>
+                    </div>
+                </nav>
+            {% endblock footer %} 
+        </footer>
+    </body>
+</html>

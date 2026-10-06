@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='style/forms.css') }}">
+{% endblock %}
+
+{% block title %}Guestbook{% endblock %}
+
+{% block main %}
+    <div class="flex-column-wrapper">
+        <section class="self-center items-center secondary" style="max-width: 50rem; min-width:min-content;">
+            <hgroup class="primary" style="align-self: stretch;">
+                <h2>{{ self.title() }}</h2>
+            </hgroup>
+            {% from 'macros.html' import get_message %}
+            {{ get_message() }}
+            <form 
+                id="issue_report_form"
+                action="{{url_for('main.guestbook')}}" 
+                method="POST"
+                enctype="multipart/form-data"
+                class="flex-column-wrapper primary">
+                {{ form.hidden_tag() }}
+                    <!-- <legend class="highlight">Login</legend> -->
+                    <div class="flex-column-wrapper">
+                        {{ form.name.label }}
+                        {{ form.name(placeholder="Your Name", autocomplete="username", autofocus=True) }}
+                    </div>
+
+                    <div class="flex-column-wrapper" style="margin-top: 1em;">
+                        {{ form.message.label }}
+                        {{ form.message(style="resize: none; height: 200px;", maxlength="255", size="50",
+                        placeholder="Leave us a message! (Max 255 characters)") }}
+                    </div>
+
+                    <div style="margin-top: 1.5rem;">
+                        {{ form.submit(style="font-size: 1.5rem;") }}
+                    </div>
+            </form>
+
+            <div class="primary" style="align-self: stretch;">
+                <p>
+                    <b>Thank you for letting us know what you think!</b><br>
+                    <i>- The Horseworld Family</i>
+                </p>
+                <br>
+                <a href onclick="javascript:history.back()">
+                    Return
+                </a>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="flex-column-wrapper">
+        <section class="self-center items-center secondary" style="max-width: 75rem; min-width:min-content;">
+            <hgroup class="primary" style="align-self: stretch;">
+                <h2>{{ self.title() }} Entries</h2>
+            </hgroup>
+
+            <div class="primary" style="align-self: stretch;">
+
+                
+
+
+            </div>
+
+        </section>
+
+    </div>
+{% endblock %}
