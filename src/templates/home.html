@@ -20,7 +20,7 @@
         <div class="sidebar secondary">
             <!-- A sidebar area for some extra related stuff -->
             <div class="flex-column-wrapper primary">
-                <a href="smeasly.net/home" title=""><img class="img-logo" src="{{ url_for('static', filename='img/logo.png') }}" alt=""></a>
+                <a href="{{ url_for('main.index') }}" title="Index"><img class="img-logo" src="{{ url_for('static', filename='img/logo.png') }}" alt=""></a>
             </div>
 
             <section>
@@ -31,7 +31,7 @@
                         <hr style="width: 85%;">
                         <ul>
                             <li><a href="{{ url_for('main.index') }}">Front Page</a></li>
-                            <li><a href="{{ url_for('main.news') }}">News</a></li>
+                            <li><a href="#">News</a></li>
                             <li><a href="#">Placeholder</a></li>                                                                                
                         </ul>
                     </div>
@@ -89,12 +89,16 @@
                 <div class="primary drop-shadow">
                     <h1 id="about" class="nav-heading"><a href="#about">{{ self.title() }}</a></h1>
                 </div>
+
+                <div class="primary drop-shadow">
+                    <h3 id="guestbook" class="nav-heading"><a href="#about">{{ self.title() }}</a></h1>
+                </div>
     
                 <div class="flex-row-wrapper">
 
                     <div class="aerobox-wrapper drop-shadow" style="flex: 0 1 auto;">
                         <div class="aerobox-top secondary">
-                            <h3>Welcome</h3>
+                            <h3>Welcome!</h3>
                         </div>
                         <div class="aerobox-mid-bottom" style="text-indent: 14px;">
                             <p>
@@ -115,80 +119,6 @@
                         <img class="img-profile img-responsive drop-shadow" src="{{ url_for('static', filename='img/elements/index_placeholder.png') }}" alt="" title="">
                     </div>
 
-                </div>
-
-                {% if announcements %}
-                {% from 'macros.html' import announcement %}
-                    <div class="flex-column-wrapper self-center">
-                        <div class="primary" style="flex-grow: 1; ">
-                            <h2><a href="{{ url_for('main.news') }}">Recent Announcements</a></h2>
-                            <hr>    
-                        </div>
-                        <div style="overflow-y: auto;">
-                        {% for anc in announcements %}
-                            {{ announcement(anc) }}
-                        {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-
-            </section>
-
-            <section>
-                <div class="primary">
-                    <h2 id="forum" class="nav-heading"><a href="#forum">Forum</a></h2>
-                </div>
-
-                <div class="primary">
-                    <h3 id="hot" class="nav-heading"><a href="#hot">Top Posts</a></h3>
-                </div>
-                <div class="flex-grid-wrapper">
-                    {% if top_posts %}
-                        {% from 'macros.html' import forumpost %}
-                        {% for post in top_posts %}
-                        <div class="flex-grid-item primary hover-highlight">
-                            {{ forumpost(post.posted_by, post, type='thread') }}
-                        </div>
-                        {% endfor %}
-                    {% else %}
-                    <div class="flex-grid-item primary hover-highlight content-center" style="flex: 1 0 auto;">
-                        <h4 style="text-align: center">No Posts Available</h4>
-                        <hr>
-                        <p>
-                            {% if not current_user.is_authenticated %}
-                            Only <a href="{{ url_for('auth.login') }}">logged in</a> users can see posts!
-                            {% else %}
-                            The forums are quiet...
-                            {% endif %}
-                        </p>
-                    </div>
-                    {% endif %}
-                </div>
-
-                <div class="primary">
-                    <h3 id="recent" class="nav-heading"><a href="#recent">Recent Posts</a></h3>
-                </div>
-                <div class="flex-grid-wrapper">
-                    {% if recent_posts %}
-                        {% from 'macros.html' import forumpost %}
-                        {% for post in recent_posts %}
-                            <div class="primary flex-grid-item">
-                                {{ forumpost() }}
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                    <div class="flex-grid-item primary hover-highlight hover-highlight content-center" style="flex: 1 0 auto;">
-                        <h4 style="text-align: center">No Posts Available</h4>
-                        <hr>
-                        <p>
-                            {% if not current_user.is_authenticated %}
-                            Only <a href="{{ url_for('auth.login') }}">logged in</a> users can see posts!
-                            {% else %}
-                            The forums are quiet...
-                            {% endif %}
-                        </p>
-                    </div>
-                    {% endif %}
                 </div>
             </section>
 
@@ -237,26 +167,23 @@
                         <div id="One" class="aerobox-bottom tab-content flex-column-wrapper" style="display: inherit;">
                             <h4>General Website Inquiries</h4>
                             <ul>
-                                <li><a href="mailto:smeasly@smeasly.net">smeasly@smeasly.net</a></li>
+                                <li><a href="mailto:admin@horseworld.ca">admin@horseworld.ca</a></li>
                             </ul>
                             <h4>Administrative Inquiries and Appeals</h4>
                             <ul>
-                                <li><a href="mailto:smeasly@smeasly.net">admin@smeasly.net</a></li>
+                                <li><a href="mailto:admin@horseworld.ca">admin@horseworld.ca</a></li>
                             </ul>
                             <h4>Suggestions and Other Issues</h4>
                             <ul>
-                                <li><a href="{{ url_for('auth.report_issue') }}">Suggestion and Issue Report Form</a></li>
+                                <li><a href="#">Suggestion and Issue Report Form</a></li>
                             </ul>
                         </div>
                         <!-- GitHub -->
                         <div id="Two" class="aerobox-bottom tab-content" style="display: none;">
                             <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Maecenas a enim quis justo interdum hendrerit.
-                                Vestibulum viverra consequat augue et bibendum.
-
-                                Nullam accumsan urna sit amet metus facilisis, et dignissim sapien fringilla.
-                                Aenean augue turpis, tristique semper convallis et, suscipit ac arcu.
+                                <a href="https://https://github.com/hunterjpg/WSGI_Example_FlaskApp">
+                                    Find this example projet on GitHub.
+                                </a>
                             </p>
                         </div>
                         <!-- Socials -->
@@ -274,97 +201,6 @@
         </div>
     </div>
 
-    <div class="secondary flex-column-wrapper">
-        <section>
-            <div class="primary drop-shadow">
-                <h3 id="contact" class="nav-heading"><a href="#sect4">Other Content</a></h3>
-            </div>
-
-            <div class="flex-grid-wrapper">
-
-                <a class="nostyle flex-grid-item flex-column-wrapper primary hover-highlight drop-shadow" href="#">
-                    <div style="text-align: center;">
-                        <h3>Title</h3>
-                        <hr >
-                    </div>
-                    <div class="content-center" style="flex: 1 0 auto;">
-                        <p>Example!</p>
-                    </div>
-                </a>
-
-                <a class="nostyle flex-grid-item flex-column-wrapper primary hover-highlight drop-shadow" href="#">
-                    <div style="text-align: center;">
-                        <h3>Title</h3>
-                        <hr >
-                    </div>
-                    <div class="content-center" style="flex: 1 0 auto;">
-                        <p>Example!</p>
-                    </div>
-                </a>
-
-                <a class="nostyle flex-grid-item flex-column-wrapper primary hover-highlight drop-shadow" href="#">
-                    <div style="text-align: center;">
-                        <h3>Title</h3>
-                        <hr >
-                    </div>
-                    <div class="content-center" style="flex: 1 0 auto;">
-                        <p>Example!</p>
-                    </div>
-                </a>
-                
-                <a class="nostyle flex-grid-item flex-column-wrapper primary hover-highlight drop-shadow" href="#">
-                    <div style="text-align: center;">
-                        <h3>Title</h3>
-                        <hr >
-                    </div>
-                    <div class="content-center" style="flex: 1 0 auto;">
-                        <p>Example!</p>
-                    </div>
-                </a>
-
-                <a class="nostyle flex-grid-item flex-column-wrapper primary hover-highlight drop-shadow" href="#">
-                    <div style="text-align: center;">
-                        <h3>Title</h3>
-                        <hr >
-                    </div>
-                    <div class="content-center" style="flex: 1 0 auto;">
-                        <p>Example!</p>
-                    </div>
-                </a>
-
-                <a class="nostyle flex-grid-item flex-column-wrapper primary hover-highlight drop-shadow" href="#">
-                    <div style="text-align: center;">
-                        <h3>Title</h3>
-                        <hr >
-                    </div>
-                    <div class="content-center" style="flex: 1 0 auto;">
-                        <p>Example!</p>
-                    </div>
-                </a>
-
-                <a class="nostyle flex-grid-item flex-column-wrapper primary hover-highlight drop-shadow" href="#">
-                    <div style="text-align: center;">
-                        <h3>Title</h3>
-                        <hr >
-                    </div>
-                    <div class="content-center" style="flex: 1 0 auto;">
-                        <p>Example!</p>
-                    </div>
-                </a>
-                
-                <a class="nostyle flex-grid-item flex-column-wrapper primary hover-highlight drop-shadow" href="#">
-                    <div style="text-align: center;">
-                        <h3>Title</h3>
-                        <hr >
-                    </div>
-                    <div class="content-center" style="flex: 1 0 auto;">
-                        <p>Example!</p>
-                    </div>
-                </a>
-
-            </div>
-        </section>
-    </div>
 {% endblock %}
 
 {% block footer %}

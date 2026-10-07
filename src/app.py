@@ -1,4 +1,4 @@
-'''Personal Site - smeasly.net
+'''Basic WSGI Flask-app Example
 Created by Hunter M
 '''
 
@@ -18,17 +18,17 @@ import os
 from datetime import datetime#, timezone
 from . import config
 
-# ---- Testing Stuff ---- #
-# class WSGITestMiddleware:
-#     '''Custom middleware to log events for testing'''
-#     def __init__(self, app: Flask):
-#         self.app = app
+# ---- Testing and Debug ---- #
 
-#     def __call__(self, environ, start_response):
-#         print(f"Incoming request:\n{environ['REQUEST_METHOD']:<10}\n{environ['PATH_INFO']:<10}")
-#         print(f"Request Remote Address:{request.remote_addr}")
-#         return self.app(environ, start_response)
+class WSGITestMiddleware:
+    '''Custom middleware to log events for testing'''
+    def __init__(self, app: Flask):
+        self.app = app
 
+    def __call__(self, environ, start_response):
+        print(f"Incoming request:\n{environ['REQUEST_METHOD']:<10}\n{environ['PATH_INFO']:<10}")
+        print(f"Request Remote Address:{request.remote_addr}")
+        return self.app(environ, start_response)
 
 
 def app_debug(_app: Flask):
@@ -40,6 +40,8 @@ def app_debug(_app: Flask):
             print(f'{name:>15}\t{repr(bp):>30}{str(bp.template_folder):>45}')
         print(f'\nMain Templates: {_app.template_folder:>20}')
         print(f'\nDatabase Engine: {repr(db.get_engine()):>20}\n')
+        # print(f'\nWSGI App: {_app.wsgi_app.__name__:>20}\n')
+
 # ---- # ---- # ---- #
 
 
@@ -71,26 +73,14 @@ def dev_seed():
     if meta and meta.seeded:
         return False
     try:
-        if not db.session.execute(select(GuestbookEntry)).first():            
-            # admin_name   = config.current_config.ADMIN_USERNAME
-            # admin_pass   = config.current_config.ADMIN_PASSWORD
-            # admin_email  = config.current_config.ADMIN_EMAIL
-            # # Create Admin
-            # d_admin: Admin = Admin()
-            # d_admin.name = admin_name
-            # d_admin.email = admin_email if admin_email else None
-            # d_admin.set_password(admin_pass)
-            # d_admin.set_id()
-            # d_admin.setup_datatable()
-            # db.session.add(d_admin)
-            # db.session.commit()
-            
-            names = ("Worf", "Jean-Luc P", "William TR", "Beverly C", "Deonna T", "Reginald B", "Data")
+        if not db.session.execute(select(GuestbookEntry)).first():
+            # Create 
+            names = ("Worf", "J. L. Picard", "W. T. Riker", "B. Crusher", "D. Troi", "R. Barclay", "Data")
             for n in range(6):
                 t_gb = GuestbookEntry()
                 t_gb.name = names[n]
                 t_gb.message = "Hello"
-                t_gb.ip = "0.0.0.0"
+                t_gb.ip = "0.0.0.X"
                 db.session.add(t_gb)
             # Update Meta to indicate DB has been seeded
             setattr(meta, 'seeded', True)
@@ -102,32 +92,35 @@ def dev_seed():
     return False
 
 
-IGNORE_IPS = set(['127.0.0.1'])
-def is_tracking_allowed():
-	#print(request.headers)
-	if 'DNT' in request.headers and request.headers['DNT'] == 1:
-		return False
-	if request.remote_addr in IGNORE_IPS:
-		return False
-	return True
-
-
-def setup_dirs():
+def setup_dirs(_app: Flask):
     try:
-        os.makedirs(app.instance_path)
+        os.makedirs(_app.instance_path)
     except OSError:
-        print(f"Instance directory at {app.instance_path} already exists or was inaccessible!")
+        print(f"Instance directory at {_app.instance_path} already exists or was inaccessible!")
 
 
 # ---- APP INITS ---- #
 def init_config(_app: Flask): #-> Config
     '''Initialise a custom config and apply the configuration to the app.'''
-    # Set one of the following configs
-    # config.current_config = config.ProductionConfig(_app)
-    # config.current_config = config.TestingConfig(_app)
-    config.current_config = config.DevelopmentConfig(_app)
-
+    config_mode = os.getenv('CONFIG_MODE')
+    if config_mode:
+        match config_mode:
+            case 'CONFIG_DEFAULT':
+                config.current_config = config.Config(_app)
+            case 'CONFIG_TESTING':
+                config.current_config = config.TestingConfig(_app)
+            case 'CONFIG_DEBUG':
+                config.current_config = config.DevelopmentConfig(_app)
+            case 'CONFIG_PRODUCTION':
+                config.current_config = config.ProductionConfig(_app)
+            case _:
+                config.current_config = config.DevelopmentConfig(_app)
+    else:
+        config.current_config = config.DevelopmentConfig(_app)
+    # Apply the config from the config object first
     _app.config.from_object(config.current_config)
+    # Then apply any envvar overrides
+    _app.config.from_prefixed_env()
 
 
 def init_db(_app: Flask): #-> SQLAlchemy:
@@ -150,16 +143,24 @@ def init_csrf(_app: Flask): #-> CSRFProtect:
         from .forms import csrf
         csrf.init_app(_app)
 
+
 def init_wsgi (_app: Flask):
     _app.wsgi_app = ProxyFix(
-    app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+        _app.wsgi_app,
+        x_for=1,
+        x_proto=1,
+        x_host=1,
+        x_prefix=1
     )
+
 
 # Flask Application
 def create_app() -> Flask:
     _app = Flask(__name__)
     ## Apply .conf file
     init_config(_app)
+    # Create DB Dirs
+    setup_dirs(_app)
     # Register blueprints
     from . import routes
     _app.register_blueprint(routes.bp)
@@ -170,7 +171,9 @@ def create_app() -> Flask:
     if _app.config['DEBUG']:
         app_debug(_app)
     elif _app.config['TESTING']:
-        # _app.wsgi_app = WSGITestMiddleware(_app) #TEST WSGI
+        _app.wsgi_app = WSGITestMiddleware(_app) #TEST WSGI
+        # init_wsgi(_app)
+    elif _app.config['PRODUCTION']:
         init_wsgi(_app)
     # Jinja2 Extensions
     _app.jinja_env.add_extension('jinja2.ext.loopcontrols')

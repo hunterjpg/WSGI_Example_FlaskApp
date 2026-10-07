@@ -28,29 +28,24 @@ class Config(object):
     
     # - Custom - #
     CREATE_SEED_DATA        = True
-    '''Enable to seed the database with an Administrator account.'''
+    '''Enable to seed the database with example/test data.'''
     # - App - #
     TESTING                 = False
     SECRET_KEY              = secrets.token_hex() #Placeholder
     MAX_FORM_PARTS          = 50
     MAX_FORM_MEMORY_SIZE    = 64 * 1000 * 1000
-    SERVER_NAME             = None
+    # SERVER_NAME             = None
     LOGGING                 = True
     # - Run - #
     HOSTNAME        = 'localhost'
-    PORT            = 5000
+    PORT            = 8000
     DEBUG           = False
     LOAD_DOTENV     = True
     USE_RELOADER    = False
     USE_EVALEX      = False
     OPTIONS         = []
-    # - Flask-Login - #
-    LOGIN_DISABLED              = False
-    LOGIN_MESSAGE_CATEGORY      = 'message'
-    SESSION_PROTECTION          = 'strong'
-    REFRESH_MESSAGE_CATEGORY    = 'error'
-    COOKIE_DURATION             = timedelta(hours=1)
     # - Database - #
+    # DB_SERVER = 'localhost'
     DATABASE_NAME               = 'site.db'
     SQLALCHEMY_DATABASE_URI     = f'sqlite+pysqlite:///{app_instance_path}/{DATABASE_NAME}'
     SQLALCHEMY_RECORD_QUERIES   = False
@@ -62,16 +57,16 @@ class ProductionConfig(Config):
     # App
     TESTING         = False
     SECRET_KEY      = 'ec862deee24a7ea40fd8b86f3ac5a4d76156016083752b1a3f190ebf48a930a6' # Placeholder
-    USE_X_SENDFILE  = True # For Apache Webserver+
+    USE_X_SENDFILE  = True # For Webservers
     # Run
     DEBUG       = False
-    HOSTNAME    = '0.0.0.0'
-    PORT        = 443
+    # HOSTNAME    = '0.0.0.0'
+    PORT        = 5000
     # DB
     @property
     def SQLALCHEMY_DATABASE_URI(self):
         return f'sqlite+pysqlite:///{self.app_instance_path}/{self.DATABASE_NAME}'
-    SQLALCHEMY_RECORD_QUERIES   = True
+    SQLALCHEMY_RECORD_QUERIES   = False
     SQLALCHEMY_ECHO             = False
 
 
