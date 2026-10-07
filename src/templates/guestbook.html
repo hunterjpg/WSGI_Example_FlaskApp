@@ -9,64 +9,49 @@
 
 {% block main %}
     <div class="flex-column-wrapper">
-        <section class="self-center items-center secondary" style="max-width: 50rem; min-width:min-content;">
-            <hgroup class="primary" style="align-self: stretch;">
+        <section class="self-center items-center secondary" style="max-width: 75rem; min-width:min-content;">
+            <hgroup class="primary drop-shadow" style="align-self: stretch;">
                 <h2>{{ self.title() }}</h2>
             </hgroup>
-            {% from 'macros.html' import get_message %}
-            {{ get_message() }}
-            <form 
-                id="issue_report_form"
-                action="{{url_for('main.guestbook')}}" 
-                method="POST"
-                enctype="multipart/form-data"
-                class="flex-column-wrapper primary">
-                {{ form.hidden_tag() }}
-                    <!-- <legend class="highlight">Login</legend> -->
-                    <div class="flex-column-wrapper">
-                        {{ form.name.label }}
-                        {{ form.name(placeholder="Your Name", autocomplete="username", autofocus=True) }}
-                    </div>
 
-                    <div class="flex-column-wrapper" style="margin-top: 1em;">
-                        {{ form.message.label }}
-                        {{ form.message(style="resize: none; height: 200px;", maxlength="255", size="50",
-                        placeholder="Leave us a message! (Max 255 characters)") }}
-                    </div>
-
-                    <div style="margin-top: 1.5rem;">
-                        {{ form.submit(style="font-size: 1.5rem;") }}
-                    </div>
-            </form>
-
-            <div class="primary" style="align-self: stretch;">
-                <p>
-                    <b>Thank you for letting us know what you think!</b><br>
-                    <i>- The Horseworld Family</i>
-                </p>
-                <br>
-                <a href onclick="javascript:history.back()">
-                    Return
-                </a>
+            <div class="primary drop-shadow">
+                <span><a href="{{ url_for('main.sign_guestbook') }}">Click Here</a> to sign our Guestbook!</span>
             </div>
         </section>
 
-    </div>
+        <section class="self-center items-center secondary" style="max-width: 75rem; min-width:50%;">
+            <div class="flex-column-wrapper" style="align-self: stretch;">
+                {% if guestbooks %}
+                    {% for entry in guestbooks %}
+                    <div class="primary drop-shadow content-left">
+                        <p> <small>{{ entry.id }}</small> - From: <strong>{{ entry.name|e }}</strong> - IP: &nbsp;<code>{{ entry.ip|safe }}</code></p>
+                        <hr>
+                        <p style="text-align: left;">
+                            <i>{{ entry.message|e }}</i>
+                        </p>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <div class="primary drop-shadow" style="align-self: stretch;">
+                    <h3>No entries to show.</h2>
+                </div>
+                {% endif %}
+            </div>
+        </section>
 
-    <div class="flex-column-wrapper">
         <section class="self-center items-center secondary" style="max-width: 75rem; min-width:min-content;">
-            <hgroup class="primary" style="align-self: stretch;">
-                <h2>{{ self.title() }} Entries</h2>
-            </hgroup>
-
-            <div class="primary" style="align-self: stretch;">
-
-                
-
-
-            </div>
-
+                <div class="primary drop-shadow" style="align-self: stretch;">
+                    <p>
+                        <b>Thank you for letting us know what you think!</b><br>
+                        <i>- The Horseworld Family</i>
+                    </p>
+                    <br>
+                    <a href onclick="javascript:history.back()">
+                        Return
+                    </a>
+                </div>        
         </section>
+
 
     </div>
 {% endblock %}

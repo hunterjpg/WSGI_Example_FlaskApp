@@ -72,7 +72,7 @@ class ProductionConfig(Config):
     def SQLALCHEMY_DATABASE_URI(self):
         return f'sqlite+pysqlite:///{self.app_instance_path}/{self.DATABASE_NAME}'
     SQLALCHEMY_RECORD_QUERIES   = True
-    SQLALCHEMY_ECHO             = True
+    SQLALCHEMY_ECHO             = False
 
 
 class TestingConfig(Config):
@@ -89,7 +89,7 @@ class TestingConfig(Config):
     # DB
     SQLALCHEMY_DATABASE_URI     = 'sqlite+pysqlite:///:memory:'
     SQLALCHEMY_RECORD_QUERIES   = True
-    SQLALCHEMY_ECHO             = True
+    SQLALCHEMY_ECHO             = False
 
 
 class DevelopmentConfig(Config):
@@ -97,12 +97,12 @@ class DevelopmentConfig(Config):
     # App
     TESTING                 = True
     # Run
-    DEBUG                   = True#False
+    DEBUG                   = True #False
     USE_RELOADER            = True
     USE_EVALEX              = True
     # DB
     SQLALCHEMY_DATABASE_URI = 'sqlite+pysqlite:///:memory:'
-    SQLALCHEMY_ECHO         = True
+    SQLALCHEMY_ECHO         = False
 
 
 

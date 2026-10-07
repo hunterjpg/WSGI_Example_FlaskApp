@@ -34,6 +34,7 @@ class GuestbookEntry(db.Model, TimestampMixin):
     id:         Mapped[int] = mapped_column(primary_key=True, unique=True, autoincrement=True)
     name:       Mapped[str] = mapped_column(String(32))
     message:    Mapped[str] = mapped_column(String(255))
+    ip:         Mapped[str] = mapped_column(String(12))
 
 
 # METADATA

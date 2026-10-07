@@ -90,6 +90,7 @@ def dev_seed():
                 t_gb = GuestbookEntry()
                 t_gb.name = names[n]
                 t_gb.message = "Hello"
+                t_gb.ip = "0.0.0.0"
                 db.session.add(t_gb)
             # Update Meta to indicate DB has been seeded
             setattr(meta, 'seeded', True)
