@@ -2,7 +2,7 @@
 
 from flask_sqlalchemy import SQLAlchemy
 from flask import abort
-from sqlalchemy import ForeignKey, String, select, DateTime, UniqueConstraint
+from sqlalchemy import ForeignKey, String, select, DateTime, UniqueConstraint, asc, desc
 from datetime import datetime, timezone, timedelta
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, defer, undefer, relationship, selectin_polymorphic
 from sqlalchemy.ext.declarative import declared_attr
@@ -19,8 +19,7 @@ db = SQLAlchemy(model_class=Base)
 # ---- CUSTOM MIXINS ---- #
 class TimestampMixin:
     created_date: Mapped[datetime] = mapped_column(DateTime(timezone=True),
-                                                   default=datetime.now(timezone.utc),
-                                                   deferred=True)
+                                                   default=datetime.now(timezone.utc))
     updated_date: Mapped[datetime] = mapped_column(DateTime(timezone=True),
                                                    onupdate=datetime.now(timezone.utc),
                                                    default=datetime.now(timezone.utc),
@@ -91,7 +90,7 @@ def increment_hitcount():
 # -- Guestbook -- #
 def all_guestbooks(paginate: bool = False):
     '''All guestbook entries sorted by date, optionally paginated'''
-    stmt = select(GuestbookEntry).order_by(GuestbookEntry.created_date)
+    stmt = select(GuestbookEntry).order_by(GuestbookEntry.id)
     # More info on using a pagination: https://flask-sqlalchemy.readthedocs.io/en/stable/pagination/
     if paginate:
         return db.paginate(stmt)

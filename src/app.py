@@ -65,30 +65,31 @@ dictConfig({
 
 
 # ---- Helper Functions ---- #
-def dev_seed():
+def dev_seed(_app: Flask):
     from .database import MetaData, db, GuestbookEntry
     '''Creates the default admin if User table is empty
     '''
     meta = db.session.query(MetaData).first()
     if meta and meta.seeded:
         return False
-    try:
-        if not db.session.execute(select(GuestbookEntry)).first():
-            # Create 
-            names = ("Worf", "J. L. Picard", "W. T. Riker", "B. Crusher", "D. Troi", "R. Barclay", "Data")
-            for n in range(6):
-                t_gb = GuestbookEntry()
-                t_gb.name = names[n]
-                t_gb.message = "Hello"
-                t_gb.ip = "0.0.0.X"
-                db.session.add(t_gb)
-            # Update Meta to indicate DB has been seeded
-            setattr(meta, 'seeded', True)
-            db.session.commit()
-            return True
-    except Exception as e:
-        db.session.rollback()
-        raise Exception from e
+    if _app.config['TESTING'] or _app.config['debug']:
+        try:
+            if not db.session.execute(select(GuestbookEntry)).first():
+                # Create 
+                names = ("Worf", "J. L. Picard", "W. T. Riker", "B. Crusher", "D. Troi", "R. Barclay", "Data")
+                for n in range(6):
+                    t_gb = GuestbookEntry()
+                    t_gb.name = names[n]
+                    t_gb.message = "Hello"
+                    t_gb.ip = "0.0.0.X"
+                    db.session.add(t_gb)
+                # Update Meta to indicate DB has been seeded
+                setattr(meta, 'seeded', True)
+                db.session.commit()
+                return True
+        except Exception as e:
+            db.session.rollback()
+            raise Exception from e
     return False
 
 
@@ -108,7 +109,7 @@ def init_config(_app: Flask): #-> Config
             case 'CONFIG_DEFAULT':
                 config.current_config = config.Config(_app)
             case 'CONFIG_TESTING':
-                config.current_config = config.TestingConfig(_app)
+                config.current_config = config.DebugConfig(_app)
             case 'CONFIG_DEBUG':
                 config.current_config = config.DevelopmentConfig(_app)
             case 'CONFIG_PRODUCTION':
@@ -116,7 +117,8 @@ def init_config(_app: Flask): #-> Config
             case _:
                 config.current_config = config.DevelopmentConfig(_app)
     else:
-        config.current_config = config.DevelopmentConfig(_app)
+        print("DEBUG: No 'CONFIG_MODE' environment variable defined. Defaulting to DebugConfig")
+        config.current_config = config.DebugConfig(_app)
     # Apply the config from the config object first
     _app.config.from_object(config.current_config)
     # Then apply any envvar overrides
@@ -134,7 +136,7 @@ def init_db(_app: Flask): #-> SQLAlchemy:
         meta = MetaData()
         MetaData.setup_meta(meta)
         if _app.config['CREATE_SEED_DATA']:
-            dev_seed()
+            dev_seed(_app)
 
 
 def init_csrf(_app: Flask): #-> CSRFProtect:

@@ -40,6 +40,7 @@ class Config(object):
     HOSTNAME        = 'localhost'
     PORT            = 8000
     DEBUG           = False
+    EXPLAIN_TEMPLATE_LOADING    = True
     LOAD_DOTENV     = True
     USE_RELOADER    = False
     USE_EVALEX      = False
@@ -53,15 +54,15 @@ class Config(object):
 
 
 class ProductionConfig(Config):
-    '''For (eventual) live use'''
+    '''For live use'''
     # App
     TESTING         = False
     SECRET_KEY      = 'ec862deee24a7ea40fd8b86f3ac5a4d76156016083752b1a3f190ebf48a930a6' # Placeholder
     USE_X_SENDFILE  = True # For Webservers
     # Run
-    DEBUG       = False
-    # HOSTNAME    = '0.0.0.0'
-    PORT        = 5000
+    DEBUG           = False
+    HOSTNAME        = '0.0.0.0'
+    PORT            = 8000
     # DB
     @property
     def SQLALCHEMY_DATABASE_URI(self):
@@ -70,34 +71,33 @@ class ProductionConfig(Config):
     SQLALCHEMY_ECHO             = False
 
 
-class TestingConfig(Config):
+class DebugConfig(Config):
     '''For local unit testing and debugging'''
+    # App
+    TESTING         = True
+    # Run
+    DEBUG           = True
+    USE_RELOADER    = True
+    USE_EVALEX      = True
+    # DB
+    SQLALCHEMY_DATABASE_URI     = 'sqlite+pysqlite:///:memory:'
+    SQLALCHEMY_RECORD_QUERIES   = True
+    SQLALCHEMY_ECHO             = True
+
+
+class DevelopmentConfig(Config):
+    '''Config for local development and limited testing'''
     # App
     TESTING                     = True
     # Run
     DEBUG                       = True
-    EXPLAIN_TEMPLATE_LOADING    = True
-    USE_RELOADER    = True
-    USE_EVALEX      = True
-    # Login
-    LOGIN_DISABLED              = True
+    EXPLAIN_TEMPLATE_LOADING    = False
+    USE_RELOADER                = True
+    USE_EVALEX                  = True
     # DB
     SQLALCHEMY_DATABASE_URI     = 'sqlite+pysqlite:///:memory:'
-    SQLALCHEMY_RECORD_QUERIES   = True
+    SQLALCHEMY_RECORD_QUERIES   = False
     SQLALCHEMY_ECHO             = False
-
-
-class DevelopmentConfig(Config):
-    '''Config for development and limited testing'''
-    # App
-    TESTING                 = True
-    # Run
-    DEBUG                   = True #False
-    USE_RELOADER            = True
-    USE_EVALEX              = True
-    # DB
-    SQLALCHEMY_DATABASE_URI = 'sqlite+pysqlite:///:memory:'
-    SQLALCHEMY_ECHO         = False
 
 
 

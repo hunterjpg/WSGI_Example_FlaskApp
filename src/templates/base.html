@@ -10,7 +10,6 @@
         <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='img/favicon.ico') }}">
         <title>{% block title %}{% endblock title %} - smeasly.net</title>
         <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='style/global.css') }}">
-        <!-- <link rel="script" type="text/javascript" href="{{ url_for('static',filename='js/local_time.js') }}"> -->
         {% endblock %}
         <noscript>
             <style>
@@ -25,30 +24,12 @@
         <div id="top"></div>
         <header>
             {% block header %}
-            <!-- Marquee/Normal banners can go here -->
             <div class="header-wrapper">
-                <div class="grid-header-wrapper">
-                    <aside class="content-center" style="max-width: 256px;">
-                        <picture>
-                            <a href="{{ url_for('main.index') }}" title="smeasly.net">
-                                <img 
-                                src="{{ url_for('static', filename='img/logo.png') }}"
-                                alt="smeasly.net Logo"
-                                style="max-width: 255px;">
-                            </a>
-                        </picture>
-                    </aside>
-
-                    <hgroup class="content-center">
+                <div class="content-center">
+                    <hgroup class="self-center">
                         <h1>horseworld.ca</h1>
                         <p style="line-height: 0.5em;"><i>Horse News and Information Nexus</i></p>
                     </hgroup>
-
-                    <div class="content-center" style="max-width: 256px">
-                        <div class="self-center">
-                            <div style="box-sizing: border-box; min-width: 255px;">&nbsp;</div>
-                        </div>
-                    </div>
                 </div>
 
                 <nav class="glossy rounded">
@@ -74,7 +55,6 @@
         
         <footer style=>
             {% block footer %}
-                <!-- Sections aligned horizontally, then nav and copy div stacked below vertically -->
                 <section class="flex-row-wrapper">
                     <ul class="footer-links">
                         <li><a href="#">Code of Conduct</a></li>
@@ -82,12 +62,12 @@
                         <li><a href="#">Privacy Policy</a></li>
                     </ul>
                     <ul class="footer-links">
-                        <li><a href="#">About</a></li>
-                        <li><a href="#">Attributions</a></li>
+                        <li><a href="https://github.com/hunterjpg">GitHub</a></li>
                     </ul>
                     <ul class="footer-links">
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Attributions</a></li>
                         <li><a href="#">Report an Issue</a></li>
-                        <li><a href="https://github.com/hunterjpg">GitHub</a></li>
                     </ul>
                 </section>
 
@@ -114,7 +94,7 @@
                     }
                     window.addEventListener('load', checkContentHeight);
                 </script>
-                <p>&copy; 2026-2027, horseworld.ca</p>
+                <p>&copy; 2025-2026, horseworld.ca</p>
             {% endblock footer %} 
         </footer>
         <div id="bottom"></div>

@@ -1,123 +1,188 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>horseworld.ca</title>
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/favicon.ico') }}">
-    <link rel="stylesheet" type= "text/css" href="{{ url_for('static',filename='style/index.css') }}">
-    <style>
-        /* Inline for this page only */
-        .img-nav {
-            width: max-content;
-            height: max-content;
-            position: relative;
-            width: 800px;
-            height: 800px;
-            background-size: 800px 800px;
-            background-image: url("{{ url_for('static', filename='img/elements/index_placeholder.png') }}");
-        }
-        .img-nav a {
-            display: block;
-            font-size: 2em;
-            position: absolute;
-            width: max-content;
-            height: min-content;
-            border-radius: var(--std-border-radius);
-            transition: var(--std-transition);
-            text-decoration: none;
-            text-shadow: 2px 2px 2px #000;
-            padding: var(--primary-padding);
-        }
-        .img-nav a:hover {
-            background-color: aqua;
-            cursor: pointer;
-            color: red;
-            text-shadow: violet;
-            box-shadow: var(--box-soft-glow) aqua;
-        }
-        a.projects{
-            top: calc(100px - 15px - var(--primary-padding));
-            left: calc(225px - var(--primary-padding));
-        }
-        a.art{
-            top: calc(225px - 15px - var(--primary-padding));
-            left: calc(100px - var(--primary-padding));
-        }
-        a.blog{
-            top: calc(400px - 15px - var(--primary-padding));
-            left: calc(50px - var(--primary-padding));
-        }
-        a.videos{
-            top: calc(575px - 15px - var(--primary-padding));
-            left: calc(100px - var(--primary-padding));
-        }
-        a.games{
-            top: calc(700px - 15px - var(--primary-padding));
-            left: calc(225px - var(--primary-padding));
-        }
-        a.social{
-            top: calc(400px - 15px - var(--primary-padding));
-            left: calc(355px - var(--primary-padding));
-        }
-        a.about{
-            top: calc(225px - 15px - var(--primary-padding));
-            left: calc(625px - var(--primary-padding));
-        }
-        a.guestbook{
-            top: calc(400px - 15px - var(--primary-padding));
-            left: calc(600px - var(--primary-padding));
-        }
-        a.coolzone{
-            top: calc(575px - 15px - var(--primary-padding));
-            left: calc(550px - var(--primary-padding));
-        }
-    </style>
-</head>
+{% extends "base.html" %}
 
-<body>
-    <!-- Flush and hide flashed messages -->
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='style/index.css') }}">
+    <script src="{{ url_for('static',filename='js/tab_block.js') }}"></script>
+{% endblock head %}
+
+{% block title %}Home{% endblock title %}
+
+{% block header %}
+    {{ super() }}
+    <!-- Flush out all flashed messages -->
     <span style="display: none;">{{ get_flashed_messages() }}</span>
-    
-    <header>
-        <!-- Logo, titlebar,  -->
-    </header>
-    
-    <main style="display: flex;">
-        <!-- Main Nav Links -->
-        <section class="center">        
-            <div class="img-nav">
-                <a class="projects" href="#">Projects</a>
-                <a class="art" href="#">Art</a>
-                <a class="blog" href="#">Blog</a>
-                <a class="social" href="#">Social</a>
-                <a class="videos" href="#">Videos</a>
-                <a class="games" href="#">Games</a>
+{% endblock header %}
 
-                <a class="about" href="#">About</a>
-                <a class="guestbook" href="{{ url_for('main.guestbook') }}">Guestbook</a>
-                <a class="coolzone" href="#">Cool Zone</a>
-            </div>
-        </section>
-    </main>
-    
-    <footer>
-        <section class="flex-row-wrapper">
-            <ul class="footer-links">
-                <li><a href="#">Code of Conduct</a></li>
-                <li><a href="#">Terms of Service</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-            </ul>
-            <ul class="footer-links">
-                <li><a href="#">About</a></li>
-                <li><a href="#">Attributions</a></li>
-            </ul>
-            <ul class="footer-links">
-                <li><a href="#">Report an Issue</a></li>
-                <li><a href="https://github.com">GitHub</a></li>
-            </ul>
-        </section>
-    </footer>
-</body>
+{%block main%}
+    <div class="flex-row-wrapper">
+        <div class="sidebar secondary">
+            <section>
+                <h2 class="primary">Links</h2>
+                <div class="primary flex-column-wrapper">
+                    <div class="flex-column-wrapper">
+                        <h3 style="text-align: center;">Site Index</h3>
+                        <hr style="width: 85%;">
+                        <ul>
+                            <li><a href="{{ url_for('main.index') }}">Front Page</a></li>
+                            <li><a href="#">News</a></li>
+                            <li><a href="#">Placeholder</a></li>                                                                                
+                        </ul>
+                    </div>
+                </div>
+                <div class="flex-column-wrapper">
+                    <div class="primary flex-column-wrapper">
+                        <div class="flex-column-wrapper">
+                            <h3 style="text-align: center;">Neat Websites</h3>
+                            <hr style="width: 85%;">
+                            <ul>
+                                <li>
+                                    <a href="https://www.random.org">random.org</a>
+                                    <p>A go-to website for random generation</p></li>
+                                <li>
+                                    <a href="https://donjon.bin.sh">donjon.bin.sh</a>
+                                    <p >More fun random generation tools</p></li>
+                                <li>
+                                    <a href="http://tom7.org">tom7.org</a>
+                                    <p>Interesting and impractical math and programming projects</p>
+                                </li>
+                                <li>
+                                    <a href="https://www.androidarts.com">androidarts.com</a>
+                                    <p>A very interesting showcase of game development and art projects</p>
+                                </li>
+                            </ul>
+                        </div>
 
-</html>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- The main page area -->
+        <div class="flex-column-wrapper secondary" style="flex: 0 1 auto;">
+
+            <section>
+                <div class="primary drop-shadow">
+                    <h1 id="welcome" class="nav-heading"><a href="#welcome">{{ self.title() }}</a></h1>
+                </div>
+
+                <div class="aerobox-wrapper drop-shadow">
+                    <div class="aerobox-top secondary">
+                        <h3>Guestbook</h3>
+                    </div>
+                    <div class="aerobox-mid-bottom items-center">
+                        <h4>Sign Our <a href="{{ url_for('main.guestbook') }}">Guestbook!</a></h4>
+                    </div>
+                </div>
+    
+                <div class="flex-row-wrapper">
+
+                    <div class="aerobox-wrapper drop-shadow" style="flex: 0 1 auto;">
+                        <div class="aerobox-top secondary">
+                            <h3>Welcome!</h3>
+                        </div>
+                        <div class="aerobox-mid-bottom" style="text-indent: 14px;">
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Maecenas a enim quis justo interdum hendrerit.
+                                Vestibulum viverra consequat augue et bibendum.
+                                Nullam accumsan urna sit amet metus facilisis, et dignissim sapien fringilla.
+                                Aenean augue turpis, tristique semper convallis et, suscipit ac arcu.
+
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Maecenas a enim quis justo interdum hendrerit.
+                                Vestibulum viverra consequat augue et bibendum.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex-column-wrapper self-center">
+                        <img class="img-profile img-responsive drop-shadow" src="{{ url_for('static', filename='img/elements/index_placeholder.png') }}" alt="" title="">
+                    </div>
+
+                </div>
+            </section>
+
+            <section>
+                <!-- <div class="primary">
+                    <h2 id="more" class="nav-heading"><a href="#more">More Information</a></h2>
+                </div> -->
+                <div class="flex-row-wrapper" style="gap: 0.25em;">
+                    <div id="about" class="aerobox-wrapper drop-shadow shrink">
+                        <div class="aerobox-top">
+                            <h3>About This Page</h3>
+                        </div>
+                        <div class="aerobox-mid-bottom" style="text-indent: 14px;">
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Maecenas a enim quis justo interdum hendrerit.
+                                Vestibulum viverra consequat augue et bibendum.
+                                Nullam accumsan urna sit amet metus facilisis, et dignissim sapien fringilla.
+                                Aenean augue turpis, tristique semper convallis et, suscipit ac arcu.
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Tabbed Aerobox Container -->
+                    <!-- The sizing should be set explicitly (non-relative values) otherwise changing
+                        the block size will change the relative sizing -->
+                    <div class="aerobox-wrapper drop-shadow" style="flex: 1 0 auto; width: 600px; height: 280px;">
+                        <div class="aerobox-top secondary flex-row-wrapper">
+                            <div id="tabOne" class="tab content-center" onclick="openTab('One', 'tabOne')" selected="true">
+                                <h3>Contact</h3>
+                            </div>
+                            <div id="tabTwo" class="tab content-center" onclick="openTab('Two', 'tabTwo')" selected="false">
+                                <h3>GitHub</h3>
+                            </div>
+                            <div id="tabThree" class="tab content-center" onclick="openTab('Three', 'tabThree')" selected="false">
+                                <h3>Social Media</h3>
+                            </div>
+                        </div>
+                        <!-- Contact -->
+                        <div id="One" class="aerobox-bottom tab-content flex-column-wrapper" style="display: inherit;">
+                            <h4>General Website Inquiries</h4>
+                            <ul>
+                                <li><a href="mailto:admin@horseworld.ca">admin@horseworld.ca</a></li>
+                            </ul>
+                            <h4>Administrative Inquiries and Appeals</h4>
+                            <ul>
+                                <li><a href="mailto:admin@horseworld.ca">admin@horseworld.ca</a></li>
+                            </ul>
+                            <h4>Suggestions and Other Issues</h4>
+                            <ul>
+                                <li><a href="#">Suggestion and Issue Report Form</a></li>
+                            </ul>
+                        </div>
+                        <!-- GitHub -->
+                        <div id="Two" class="aerobox-bottom tab-content" style="display: none;">
+                            <p>
+                                <a href="https://https://github.com/hunterjpg/WSGI_Example_FlaskApp">
+                                    Find this example project on GitHub!
+                                </a>
+                            </p>
+                        </div>
+                        <!-- Socials -->
+                        <div id="Three" class="aerobox-bottom tab-content" style="display: none;">
+                            <p>
+                                I don't use that crap,<br>
+                                And you shouldn't either!
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="grow">
+                <div class="primary drop-shadow" style="flex: 1 0 auto;">
+                    <p>&nbsp;</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+    {{ super() }}
+{% endblock %}

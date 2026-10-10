@@ -17,11 +17,11 @@ def index():
 
 @bp.route('/guestbook', methods=['GET', 'POST'])
 def guestbook():
-    guestbooks = all_guestbooks(False)
+    guestbooks = all_guestbooks(paginate=False)
     return render_template('guestbook.html', guestbooks=guestbooks)
 
 
-@bp.route('/guestbook?t=sign', methods=['GET', 'POST'])
+@bp.route('/guestbook&t=sign', methods=['GET', 'POST'])
 def sign_guestbook():
     form = GuestBookForm(request.values)
 

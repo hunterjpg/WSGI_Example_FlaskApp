@@ -5,11 +5,11 @@
     <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='style/forms.css') }}">
 {% endblock %}
 
-{% block title %}Sign Guestbook{% endblock %}
+{% block title %}Sign Our Guestbook{% endblock %}
 
 {% block main %}
     <div class="flex-column-wrapper">
-        <section class="self-center items-center secondary" style="max-width: 50rem; min-width:min-content;">
+        <section class="self-center items-center secondary" style="max-width: 50%; min-width: 50%">
             <hgroup class="primary drop-shadow" style="align-self: stretch;">
                 <h2>{{ self.title() }}</h2>
             </hgroup>
@@ -20,7 +20,8 @@
                 action="{{ url_for('main.sign_guestbook') }}" 
                 method="POST"
                 enctype="multipart/form-data"
-                class="flex-column-wrapper primary drop-shadow">
+                class="flex-column-wrapper primary drop-shadow grow"
+                style="align-self: stretch;">
                 {{ form.hidden_tag() }}
                     <!-- <legend class="highlight">Login</legend> -->
                     <div class="flex-column-wrapper">
@@ -30,17 +31,24 @@
 
                     <div class="flex-column-wrapper" style="margin-top: 1em;">
                         {{ form.message.label }}
-                        {{ form.message(style="resize: none; height: 200px;", maxlength="255", size="50",
+                        {{ form.message(style="resize: none; height: 150px;", maxlength="255", size="50",
                         placeholder="Leave us a message! (Max 255 characters)") }}
                     </div>
 
-                    <div class="flex-row-wrapper" style="margin-top: 1em;">
+                    <div class="flex-row-wrapper items-center" style="margin-top: 1em;">
                         {{ form.confirm.label }}
                         {{ form.confirm(style="height: 64px;") }}
                     </div>
 
-                    <div style="margin-top: 1.5rem;">
-                        {{ form.submit(style="font-size: 1.5rem;") }}
+                    <details class="shrink">
+                        <summary style="cursor: pointer">Terms of Service</summary>
+                        <p style="text-align: left; text-indent: 1em;">
+                            By checking the box above, you agree to allow this website to record your IP address for accounting purposes, and store any information you write in the guestbook.
+                        </p>
+                    </details>
+
+                    <div style="margin-top: 1rem;">
+                        {{ form.submit(style="font-size: 1rem;") }}
                     </div>
             </form>
         </section>
@@ -51,7 +59,6 @@
                         <b>Thank you for letting us know what you think!</b><br>
                         <i>- The Horseworld Family</i>
                     </p>
-                    <br>
                     <a href onclick="javascript:history.back()">
                         Return
                     </a>

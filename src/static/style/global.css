@@ -1,13 +1,10 @@
 /* ----- ----- -----
-Global style-sheet for Smeasly.net - Created by Hunter M
+Global style-sheet example - Created by Hunter M
 Attributions and copied styles are noted where applicable.
 
 These styles apply to all templates, while individual
 templates may have their own sheet or use generic sheets for specific
 groups of elements (e.g.: tables).
-
-This file may be broken out into smaller files later 
-to ease management. 
 ----- ------ ----- */
 
 
@@ -97,18 +94,6 @@ for more information about using url_for() with CSS */
     --box-soft-glow: 0 0px 15px 5px;
     --primary-box-shadow:   0 4px 8px 0 rgba(0, 0, 0, 0.3),
                             0 6px 10px 0 rgba(0, 0, 0, 0.25);
-    /* Images and Icons */
-    /* --img-page-bg: url(../img/root_weave.png); */
-    /* --img-banner: url(../img/banner.jpg);
-    
-    --img-logo: url(../img/logo.png);
-    --img-profile: url(../img/profile.jpg);
-
-    --img-email: url(../img/email.png);
-    --img-linkedin: url(../img/linkedin.png);
-    --img-github-b: url(../img/github-b.png);
-    --img-github-w: url(../img/github-w.png);
-    --img-social: url(../img/bluesky.png); */
 }
 :root.theme-light {
     /* Main Element Colours */
@@ -786,7 +771,7 @@ picture {
 .shrink {
     flex: 0 1 auto;
 }
-/* Align/Justify RLC */
+/* Justify R/L/C */
 .justify-center {
     justify-content: center;
     justify-self: center;
@@ -802,6 +787,7 @@ picture {
     justify-self: right;
     justify-items: right;
 }
+/* Align R/L/C */
 .align-center {
     align-content: center;
     align-self: center;

@@ -72,8 +72,8 @@ class GuestBookForm(FlaskForm):
                                 ]
                             )
     message     =   TextAreaField("Leave a Message", validators=[Optional()])
-    confirm     =   BooleanField("I have agreed to the guesbook terms of use",
+    confirm     =   BooleanField("I have agreed to our Terms of Service",
                                  validators=[
-                                     InputRequired("You must agree to the terms of use"),
+                                     InputRequired("You must agree to the Terms of Service"),
                                     ])
     submit      =   SubmitButtonField("Sign")
