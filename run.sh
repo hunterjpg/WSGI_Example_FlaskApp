@@ -1,12 +1,19 @@
 #!/bin/bash
 
+#################################################
+#                                               #
+#               Startup Script                  #
+#      Script will be run by flask.service      #
+#                                               #
+#################################################
+
 set -o errexit
 
 echo Starting Server...
 
-cd "$(dirname "$0")"
+#cd "$(dirname "$0")"
 
-source .venv/bin/activate
+#source .venv/bin/activate
 
 # EXPORTS
 # See https://flask.palletsprojects.com/en/stable/config/ for info on setting via environment variables
