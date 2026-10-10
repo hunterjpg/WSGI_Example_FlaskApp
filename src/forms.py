@@ -1,7 +1,7 @@
 # Flask Forms
 from flask_wtf import FlaskForm
-from wtforms import StringField, Field, HiddenField, TextAreaField
-from wtforms.validators import (DataRequired, 
+from wtforms import StringField, Field, HiddenField, TextAreaField, BooleanField
+from wtforms.validators import (DataRequired, InputRequired,
                                 EqualTo, Optional, 
                                 Regexp, ValidationError)
 from wtforms.widgets import TextInput, html_params
@@ -62,7 +62,7 @@ class GuestBookForm(FlaskForm):
     username    =   HiddenField(validators=[Optional(), EqualTo('name')])
     name        =   StringField("Your Name",
                             validators=[
-                                DataRequired('A Username is Required!'),
+                                InputRequired('A Username is Required!'),
                                 Regexp(
                                     "^[A-Za-z][A-Za-z0-9_.]*$", 
                                     0,
@@ -72,4 +72,8 @@ class GuestBookForm(FlaskForm):
                                 ]
                             )
     message     =   TextAreaField("Leave a Message", validators=[Optional()])
+    confirm     =   BooleanField("I have agreed to the guesbook terms of use",
+                                 validators=[
+                                     InputRequired("You must agree to the terms of use"),
+                                    ])
     submit      =   SubmitButtonField("Sign")

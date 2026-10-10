@@ -34,6 +34,11 @@
                         placeholder="Leave us a message! (Max 255 characters)") }}
                     </div>
 
+                    <div class="flex-row-wrapper" style="margin-top: 1em;">
+                        {{ form.confirm.label }}
+                        {{ form.confirm(style="height: 64px;") }}
+                    </div>
+
                     <div style="margin-top: 1.5rem;">
                         {{ form.submit(style="font-size: 1.5rem;") }}
                     </div>
