@@ -72,7 +72,7 @@ def dev_seed(_app: Flask):
     meta = db.session.query(MetaData).first()
     if meta and meta.seeded:
         return False
-    if _app.config['TESTING'] or _app.config['debug']:
+    if _app.config['TESTING'] or _app.config['DEBUG']:
         try:
             if not db.session.execute(select(GuestbookEntry)).first():
                 # Create 
