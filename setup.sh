@@ -20,5 +20,4 @@ python -m pip install --no-cache-dir -r requirements.txt
 python -m pip install pyuwsgi
 
 echo "Flask-WSGI Server is ready to use!"
-
 exit 0

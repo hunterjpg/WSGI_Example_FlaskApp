@@ -40,7 +40,6 @@ class Config(object):
     HOSTNAME        = 'localhost'
     PORT            = 8000
     DEBUG           = False
-    EXPLAIN_TEMPLATE_LOADING    = True
     LOAD_DOTENV     = True
     USE_RELOADER    = False
     USE_EVALEX      = False
@@ -61,7 +60,6 @@ class ProductionConfig(Config):
     USE_X_SENDFILE  = True # For Webservers
     # Run
     DEBUG           = False
-    HOSTNAME        = '0.0.0.0'
     PORT            = 8000
     # DB
     @property

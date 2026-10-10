@@ -21,5 +21,3 @@ export FLASK_SERVER_NAME="$(hostname)"
 export CONFIG_MODE="CONFIG_PRODUCTION"
 
 uwsgi --ini wsgi.ini
-
-exit 0
