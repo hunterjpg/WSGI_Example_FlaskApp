@@ -1,8 +1,10 @@
-#! /bin/bash
+#!/bin/bash
 
 set -o errexit
 
 echo Starting Server...
+
+cd "$(dirname "$0")"
 
 source .venv/bin/activate
 
@@ -19,3 +21,5 @@ export FLASK_SERVER_NAME="$(hostname)"
 export CONFIG_MODE="CONFIG_PRODUCTION"
 
 uwsgi --ini wsgi.ini
+
+exit 0

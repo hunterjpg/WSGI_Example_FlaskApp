@@ -175,7 +175,7 @@ def create_app() -> Flask:
     elif _app.config['TESTING']:
         _app.wsgi_app = WSGITestMiddleware(_app) #TEST WSGI
         # init_wsgi(_app)
-    elif _app.config['PRODUCTION']:
+    else:
         init_wsgi(_app)
     # Jinja2 Extensions
     _app.jinja_env.add_extension('jinja2.ext.loopcontrols')
