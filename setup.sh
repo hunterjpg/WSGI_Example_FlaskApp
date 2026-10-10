@@ -1,9 +1,15 @@
 #!/bin/bash
 
-# Setup script to make the environment ready
+#################################################
+#                                               #
+# Setup script to make the environment ready    #
+# Script needs to run initially as root         #
+#                                               #
+#################################################
 
 set -o errexit
 
+cd "$(dirname "$0")"
 
 # Checks
 if ! command -V nginx >/dev/null; then
@@ -22,10 +28,8 @@ if ! [[ "$(python3 --version)" =~ Python 3\.14\..*]]; then
     exit 1
 fi
 
-
 # User Setup
 useradd flask -s /bin/bash --system
-
 
 # Dir Setup
 echo -n "Setting up directories..."
@@ -34,30 +38,29 @@ touch /var/log/nginx/flask/app.log
 touch /var/log/nginx/flask/access.log
 touch /var/log/nginx/flask/error.log
 
-
 # System Files
 if ! [[ -e /etc/nginx/conf.d/nginx_proxy.conf ]]; then
     echo -n "Adding configurations to NGINX..."
-    cp ./system/nginx_proxy.conf /etc/nginx/conf.d/nginx_proxy.conf
+    cat ./system/nginx_proxy.conf > /etc/nginx/conf.d/nginx_proxy.conf
     chown nginx:nginx /etc/nginx/conf.d/nginx_proxy.conf
 fi
 
 if ! [[ -e /etc/systemd/system/flask.service ]]; then
     echo -n "Creating flask.service..."
-    cp ./system/flask.service /etc/systemd/system/flask.service
+    cat ./system/flask.service > /etc/systemd/system/flask.service
     systemctl daemon-reload
     systemctl enable flask
 fi
 
-
 # Python Setup
 python3.14 -m venv .venv
-
 source .venv/bin/activate
-
 python -m pip install --no-cache-dir -r requirements.txt
 python -m pip install pyuwsgi
 
-echo -n "Flask-WSGI Server is ready to use!"
+# Misc
+chmod 750 ./run.sh
 
+# Done
+echo -n "Flask-WSGI Server is ready to use!"
 exit 0

@@ -5,7 +5,7 @@ After=network.targete
 [Service]
 Type=oneshot
 User=flask
-Group=flask
+Group=nginx
 WorkingDirectory=/var/www/flask_wsgi
 Environment=/var/www/flask_wsgi/.venv/bin
 ExecStartPre=rm -f /tmp/uwsgi.sock
