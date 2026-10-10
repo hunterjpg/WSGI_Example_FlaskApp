@@ -13,7 +13,7 @@ echo -n "Starting Server..."
 
 cd "$(dirname "$0")"
 
-#source .venv/bin/activate
+source .venv/bin/activate
 
 # EXPORTS
 # See https://flask.palletsprojects.com/en/stable/config/ for info on setting via environment variables

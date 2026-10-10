@@ -42,7 +42,7 @@ touch /var/log/nginx/flask/error.log
 if ! [[ -e /etc/nginx/conf.d/nginx_proxy.conf ]]; then
     echo -n "Adding configurations to NGINX..."
     cat ./system/nginx_proxy.conf > /etc/nginx/conf.d/nginx_proxy.conf
-    chown nginx:nginx /etc/nginx/conf.d/nginx_proxy.conf
+    # chown nginx:nginx /etc/nginx/conf.d/nginx_proxy.conf
 fi
 
 if ! [[ -e /etc/systemd/system/flask.service ]]; then
