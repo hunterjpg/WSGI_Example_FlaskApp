@@ -1,6 +1,6 @@
 [Unit]
 Description=Flask Webserver
-After=network.targete
+After=network.target
 
 [Service]
 Type=oneshot
@@ -8,9 +8,10 @@ User=flask
 Group=nginx
 WorkingDirectory=/var/www/flask_wsgi
 Environment=/var/www/flask_wsgi/.venv/bin
-ExecStartPre=rm -f /tmp/uwsgi.sock
 ExecStart=/usr/bin/bash /var/www/flask_wsgi/run.sh
 ExecReload=/var/www/flask_wsgi/.venv/bin/uwsgi --stop --no-orphans
+TimeoutStartSec=1
 
 [Install]
 WantedBy=multi-user.target
+RequiredBy=network.target

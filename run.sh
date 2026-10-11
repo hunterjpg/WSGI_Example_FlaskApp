@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #################################################
 #                                               #
@@ -7,13 +7,12 @@
 #                                               #
 #################################################
 
-set -o errexit
+#set -o errexit
+set -e 
 
 echo -n "Starting Server..."
 
 cd "$(dirname "$0")"
-
-source .venv/bin/activate
 
 # EXPORTS
 # See https://flask.palletsprojects.com/en/stable/config/ for info on setting via environment variables
@@ -26,6 +25,6 @@ export FLASK_SERVER_NAME="$(hostname)"
 # Choose one of (CONFIG_DEFAULT, CONFIG_TESTING, CONFIG_DEBUG, CONFIG_PRODUCTION)
 export CONFIG_MODE="CONFIG_PRODUCTION"
 
-uwsgi --ini wsgi.ini
+/var/www/flask_uwsgi/.venv/bin/uwsgi --ini wsgi.ini 1>/dev/null 2>>/var/log/flask_uwsgi/error.log
 
 echo -n "Server Started..."
