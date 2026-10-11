@@ -6,22 +6,13 @@
 {# {{ get_message() }} #}
 {# messages should be called as `get_flashed_messages(with_categories=true)` and formerrors as form.errors #}
     {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages or formerrors %}
-            <div class="primary">                        
+        {% if messages %}
+            <div class="primary drop-shadow">                        
                 {% if messages %}
                     <div class="{{ messages[0][0] }}">
                         <span>{{ messages[0][1]|safe }}</span>
                     </div>
                 {% endif %}     
-                {% if formerrors %}
-                <div class="error">
-                    <ul>
-                    {% for error in form.errors %}
-                        <li>{{ error|safe }}</li>
-                    {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
             </div>
         {% endif %}
     {% endwith %}

@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='style/forms.css') }}">
+    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='style/tables.css') }}">
+{% endblock %}
+
+{% block title %}Admin{% endblock %}
+
+{% block main %}
+    <div class="flex-column-wrapper">
+        <!-- class="self-center items-center secondary" style="max-width: 50%; min-width: 50%" -->
+        <section class="secondary flex-column-wrapper">
+            <div></div>
+            <hgroup class="primary drop-shadow items-center" style="align-self: stretch;">
+                <h2>{{ self.title() }}</h2>
+            </hgroup>
+            {% from 'macros.html' import get_message %}
+            {{ get_message() }}
+        
+            <div class="flex-row-wrapper" style="margin-top: 1rem;">
+                <div class="flex-column-wrapper grow">
+                    <hgroup class="primary drop-shadow" style="align-self: stretch;">
+                        <h4>Remove Guestbook Entry</h4>
+                    </hgroup>
+                    <form 
+                        id="admin_remove_form"
+                        action="{{ url_for('main.admin_remove') }}" 
+                        method="POST"
+                        enctype="multipart/form-data"
+                        class="flex-column-wrapper primary drop-shadow grow"
+                        style="align-self: stretch;">
+                        {{ remove_form.hidden_tag() }}
+                            <div class="flex-column-wrapper">
+                                {{ remove_form.id.label }}
+                                {{ remove_form.id }}
+                            </div>
+                            <div style="margin-top: 1rem;">
+                                {{ remove_form.submit(style="font-size: 1rem;") }}
+                            </div>
+                    </form>
+                </div>
+                
+            
+                <div class="flex-column-wrapper grow">
+                    <hgroup class="primary drop-shadow" style="align-self: stretch;">
+                        <h4>Ban IP Address</h4>
+                    </hgroup>
+                    <form 
+                        id="admin_ban_form"
+                        action="{{ url_for('main.admin_ban') }}" 
+                        method="POST"
+                        enctype="multipart/form-data"
+                        class="flex-column-wrapper primary drop-shadow grow"
+                        style="align-self: stretch;">
+                        {{ ban_form.hidden_tag() }}
+                            <div class="flex-column-wrapper">
+                                {{ ban_form.ip.label }}
+                                {{ ban_form.ip(placeholder="12.34.56.78") }}
+                            </div>
+                            <div style="margin-top: 1rem;">
+                                {{ ban_form.submit(style="font-size: 1rem;") }}
+                            </div>
+                    </form>
+                </div>
+    
+                <div class="flex-column-wrapper grow">
+                    <hgroup class="primary drop-shadow" style="align-self: stretch;">
+                        <h4>Unban IP Address</h4>
+                    </hgroup>
+                    <form 
+                        id="admin_unban_form"
+                        action="{{ url_for('main.admin_unban') }}" 
+                        method="POST"
+                        enctype="multipart/form-data"
+                        class="flex-column-wrapper primary drop-shadow grow"
+                        style="align-self: stretch;">
+                        {{ unban_form.hidden_tag() }}
+                            <div class="flex-column-wrapper">
+                                {{ unban_form.ip.label }}
+                                {{ unban_form.ip(placeholder="12.34.56.78") }}
+                            </div>
+                            <div style="margin-top: 1rem;">
+                                {{ unban_form.submit(style="font-size: 1rem;") }}
+                            </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="flex-row-wrapper" style="margin-top: 1rem;">
+                <div class="flex-column-wrapper grow">
+                    <hgroup class="primary drop-shadow" style="align-self: stretch;">
+                        <h4>Guestbook Entries</h4>
+                    </hgroup>
+                    <div class="grow primary drop-shadow">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>IP Address</th>
+                                    <th>Message</th>
+                                </tr>
+                                {% for guestbook in guestbooks %}
+                                <tr>
+                                    <td>{{ guestbook.id }}</td>
+                                    <td>{{ guestbook.name|e }}</td>
+                                    <td>{{ guestbook.ip }}</td>
+                                    <td>{{ guestbook.message|e }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="flex-column-wrapper grow">
+                    <hgroup class="primary drop-shadow" style="align-self: stretch;">
+                        <h4>Banned IPs</h4>
+                    </hgroup>
+                    <div class="grow primary drop-shadow">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>IP Address</th>
+                                </tr>
+                                {% for banned_ip in banned_ips %}
+                                <tr>
+                                    <td>{{ banned_ip.id }}</td>
+                                    <td>{{ banned_ip.ip }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="self-center items-center secondary" style="align-self: stretch;">
+                <div class="primary drop-shadow grow" style="align-self: stretch;">
+                    <a href onclick="javascript:history.back()">
+                        Return
+                    </a>
+                    <br>
+                    <a href="{{ url_for('main.logout') }}">Logout</a>
+                    <br>
+                    <a href="{{ url_for('main.guestbook') }}">View Guestbook</a>
+                </div>        
+        </section>
+
+    </div>
+{% endblock %}

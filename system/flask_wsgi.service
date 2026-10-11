@@ -1,5 +1,5 @@
 [Unit]
-Description=Flask Webserver
+Description=Flask-WSGI Webserver
 After=network.target
 
 [Service]

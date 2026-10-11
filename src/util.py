@@ -63,6 +63,13 @@ def readable_time(unix_time: int | float, timezone = UTC) -> str:
     return datetime.fromtimestamp(unix_time, timezone).strftime('%Y-%m-%d %H:%M:%S')
 
 
+def ordinal(n: int):
+    if 11 <= (n % 100) <= 13:
+        suffix = 'th'
+    else:
+        suffix = ['th', 'st', 'nd', 'rd', 'th'][min(n % 10, 4)]
+    return str(n) + suffix
+
 # --- UTC datetime for SQLAlchemy --- #
 class utcnow(expression.FunctionElement):
     type = DateTime()

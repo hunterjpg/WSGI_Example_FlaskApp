@@ -66,7 +66,7 @@ dictConfig({
 
 # ---- Helper Functions ---- #
 def dev_seed(_app: Flask):
-    from .database import MetaData, db, GuestbookEntry
+    from .database import MetaData, User, db, GuestbookEntry
     '''Creates the default admin if User table is empty
     '''
     meta = db.session.query(MetaData).first()
@@ -84,12 +84,27 @@ def dev_seed(_app: Flask):
                     t_gb.ip = "0.0.0.X"
                     db.session.add(t_gb)
                 # Update Meta to indicate DB has been seeded
-                setattr(meta, 'seeded', True)
                 db.session.commit()
-                return True
         except Exception as e:
             db.session.rollback()
             raise Exception from e
+    try:
+        if not db.session.execute(select(User)).first():            
+            admin_name   = config.current_config.ADMIN_USERNAME
+            admin_pass   = config.current_config.ADMIN_PASSWORD
+            # Create Admin
+            d_admin: User = User()
+            d_admin.name = admin_name
+            d_admin.set_password(admin_pass)
+            db.session.add(d_admin)
+            db.session.commit()
+            # Update Meta to indicate DB has been seeded
+            setattr(meta, 'seeded', True)
+            db.session.commit()
+            return True
+    except Exception as e:
+        db.session.rollback()
+        raise Exception from e
     return False
 
 
@@ -145,6 +160,17 @@ def init_csrf(_app: Flask): #-> CSRFProtect:
         from .forms import csrf
         csrf.init_app(_app)
 
+def init_login(_app: Flask): #-> LoginManager:
+    '''Init LoginManager for FlaskLogin'''
+    with _app.app_context():
+        from .login import login_manager
+        import src.routes
+        login_manager.session_protection = config.current_config.SESSION_PROTECTION
+        login_manager.login_view = 'main.login' # type: ignore
+        login_manager.login_message_category = config.current_config.LOGIN_MESSAGE_CATEGORY
+        login_manager.needs_refresh_message_category = config.current_config.REFRESH_MESSAGE_CATEGORY
+        login_manager.init_app(_app)
+
 
 def init_wsgi (_app: Flask):
     _app.wsgi_app = ProxyFix(
@@ -169,6 +195,7 @@ def create_app() -> Flask:
     # Inits
     init_db(_app)
     init_csrf(_app)
+    init_login(_app)
     # Debug/Testing
     if _app.config['DEBUG']:
         app_debug(_app)
@@ -220,18 +247,18 @@ def health():
     return 'OK', 200
 
 
-# @app.get('/dev/seed')
-# def dev_seed_route():
-#     from flask import render_template_string
-#     if dev_seed():
-#         admin_name   = config.current_config.ADMIN_USERNAME
-#         admin_email  = config.current_config.ADMIN_EMAIL
-#         temp = (f'<h1>Created Seed Admin</h1>'
-#                 f"<p>Username: '{admin_name}'</p>"
-#                 f'<p>Email: {admin_email}</p>')
-#         return render_template_string(temp), 200
-#     return abort(404)
-# ---- # ---- # ---- #
+
+@app.get('/admin/seed')
+def dev_seed_route():
+    from flask import render_template_string
+    if dev_seed(app):
+        admin_name   = config.current_config.ADMIN_USERNAME
+        admin_password  = config.current_config.ADMIN_PASSWORD
+        temp = (f'<h1>Created Seed Admin</h1>'
+                f"<p>Username: '{admin_name}'</p>"
+                f'<p>Email: {admin_password}</p>')
+        return render_template_string(temp), 200
+    return abort(404)
 
 
 # ---- Standard HTTP Error Handlers ---- #

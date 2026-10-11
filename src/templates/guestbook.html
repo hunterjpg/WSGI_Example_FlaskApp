@@ -26,8 +26,8 @@
                     <div class="primary drop-shadow content-left">
                         <p> <small>{{ entry.id }}</small> - From: <strong>{{ entry.name|e }}</strong> - IP: &nbsp;<code>{{ entry.ip|safe }}</code></p>
                         <hr>
-                        <p style="text-align: left;">
-                            <i>{{ entry.message|e }}</i>
+                        <p style="text-align: left; text-indent: 1em;">
+                            <i>"{{ entry.message|e }}"</i>
                         </p>
                     </div>
                     {% endfor %}

@@ -9,14 +9,14 @@
 
 {% block main %}
     <div class="flex-column-wrapper">
-        <section class="self-center items-center secondary" style="max-width: 50%; min-width: 50%">
+        <section class="self-center items-center secondary" style="width: 25vw;">
             <hgroup class="primary drop-shadow" style="align-self: stretch;">
                 <h2>{{ self.title() }}</h2>
             </hgroup>
             {% from 'macros.html' import get_message %}
             {{ get_message() }}
             <form 
-                id="issue_report_form"
+                id="guestbook_form"
                 action="{{ url_for('main.sign_guestbook') }}" 
                 method="POST"
                 enctype="multipart/form-data"
@@ -35,15 +35,16 @@
                         placeholder="Leave us a message! (Max 255 characters)") }}
                     </div>
 
-                    <div class="flex-row-wrapper items-center" style="margin-top: 1em;">
-                        {{ form.confirm.label }}
+                    <div class="flex-row-wrapper" style="margin-top: 1em;">
+                        {{ form.confirm.label|safe }}
                         {{ form.confirm(style="height: 64px;") }}
                     </div>
 
-                    <details class="shrink">
+                    <details class="shrink content-center">
                         <summary style="cursor: pointer">Terms of Service</summary>
-                        <p style="text-align: left; text-indent: 1em;">
-                            By checking the box above, you agree to allow this website to record your IP address for accounting purposes, and store any information you write in the guestbook.
+                        <p style="text-align: center">
+                            By checking the box above, you agree to allow this website to record your IP address 
+                            for accounting purposes, and store any information you write in the guestbook.
                         </p>
                     </details>
 

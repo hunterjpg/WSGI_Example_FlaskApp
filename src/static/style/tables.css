@@ -1,35 +1,35 @@
-.table-wrapper {
+table {
     overflow-y: auto;
     overflow-x: clip; 
     max-height: 450px;
-    max-width: 100%;
     height: fit-content;
-    width: fit-content;
+    width: 100%;
 }
 
-.table {
-    table-layout: fixed;
+tbody {
+    /* overflow-y: scroll; */
+    table-layout: auto;
     width: 100%;
     background-color: var(--primary-color);
 }
 
-.table-row:nth-child(even) {
+tr:nth-child(even) {
     background-color: var(--secondary-color);
 }
 
-.table-header {
+tr > th {
     padding: 4px;
     background-color: var(--highlight-color); 
     min-width: 75px;
     color: white;
 }
 
-.table-header-cell {
+th {
     padding: 3px;
     text-align: center;
 }
 
-.table-cell {
+td {
     padding: 2px;
     min-width: 75px;
     word-wrap: break-word;

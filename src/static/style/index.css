@@ -94,7 +94,6 @@ main section + section {
     100% {background-color: var(--primary-color);}
 }
 
-
 /* Footer */
 .footer-navwrapper {
     margin: var(--primary-margin);

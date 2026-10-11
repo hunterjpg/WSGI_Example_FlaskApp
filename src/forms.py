@@ -1,22 +1,16 @@
 # Flask Forms
 from flask_wtf import FlaskForm
-from wtforms import StringField, Field, HiddenField, TextAreaField, BooleanField
+from wtforms import (StringField, Field, HiddenField, TextAreaField,
+                      BooleanField, SelectField, PasswordField, ValidationError)
 from wtforms.validators import (DataRequired, InputRequired,
-                                EqualTo, Optional, 
-                                Regexp, ValidationError)
+                                EqualTo, Optional, IPAddress,
+                                 MacAddress, Regexp)
 from wtforms.widgets import TextInput, html_params
 from markupsafe import Markup
-from .database import guestbook_by_name
+from .database import guestbook_by_name, guestbook_by_id
 
 from flask_wtf.csrf import CSRFProtect
 csrf = CSRFProtect()
-
-def name_not_taken(form: FlaskForm, field: StringField):
-    '''Ensure the username has not been registered'''
-    if not field.data: 
-        raise ValidationError(f"Please supply a username!")
-    if guestbook_by_name(field.data):
-        raise ValidationError(f"'{field.data}' is already taken!")
 
 # --- Custom Widgets --- #
 class ButtonWidget(object):
@@ -41,6 +35,60 @@ class ButtonWidget(object):
         input_params = self.html_params(name=field.name, **kwargs)
         return Markup(f"<button {input_params}><span>{field.label.text}</span></button>")
     
+# --- Custom Validators --- #
+def name_not_taken(form: FlaskForm, field: StringField):
+    '''Ensure the username has not been registered'''
+    if not field.data: 
+        raise ValidationError(f"A Username is Required!")
+    if guestbook_by_name(field.data):
+        raise ValidationError(f"'{field.data}' is already taken!")
+
+
+def guestbook_exists(form: FlaskForm, field: StringField):
+    '''Ensure the guestbook exists at the given ID'''
+    if not field.data: 
+        raise ValidationError("No ID provided!")
+    try:
+        if not guestbook_by_id(int(field.data)):
+            raise ValidationError(f"No Guestbook matching '{field.data}' found!")
+    except ValueError:
+        raise ValidationError(f"ID '{field.data}' not valid!")
+
+
+class OptionalIf(Optional):
+    '''a validator which makes a field optional if another field has any truthy value.  
+    Source:
+        - http://stackoverflow.com/questions/8463209/how-to-make-a-field-conditionally-optional-in-wtforms
+    '''
+    def __init__(self, other_field_name: str, *args, **kwargs): # message: str|None = None,
+        self.other_field_name = other_field_name
+        super(OptionalIf, self).__init__(*args, **kwargs)
+
+    def __call__(self, form: FlaskForm, field: Field):
+        other_field = form._fields.get(self.other_field_name)
+        if other_field is None:
+            raise Exception(f'No field named "{self.other_field_name}" in form "{form}".')
+        if bool(other_field.data):
+            super(OptionalIf, self).__call__(form, field)
+
+
+class RequiredIf(InputRequired):
+    '''a validator which makes a field InputRequired if another field is input with any truthy value.  
+    Source:
+        - http://stackoverflow.com/questions/8463209/how-to-make-a-field-conditionally-optional-in-wtforms
+    '''
+    def __init__(self, other_field_name: str, message: str|None=None, *args, **kwargs):
+        self.other_field_name = other_field_name
+        self.message = message
+        super(RequiredIf, self).__init__(*args, **kwargs)
+
+    def __call__(self, form: FlaskForm, field: Field):
+        other_field = form._fields.get(self.other_field_name)
+        if other_field is None:
+            raise Exception(f'No field named "{self.other_field_name}" in form "{form}".')
+        if bool(other_field.data):
+            super(RequiredIf, self).__call__(form, field)
+
 
 # --- Custom Fields --- #
 class SubmitButtonField(Field):
@@ -57,23 +105,72 @@ class SubmitButtonField(Field):
 
 
 # --- GUESTBOOK --- #
-class GuestBookForm(FlaskForm):
-    # Disallow logged in users
-    username    =   HiddenField(validators=[Optional(), EqualTo('name')])
+class GuestbookForm(FlaskForm):
     name        =   StringField("Your Name",
                             validators=[
+                                name_not_taken,
                                 InputRequired('A Username is Required!'),
                                 Regexp(
-                                    "^[A-Za-z][A-Za-z0-9_.]*$", 
-                                    0,
-                                    "Usernames must have only letters, " "numbers, dots or underscores",
-                                    ),
-                                name_not_taken
+                                    regex="^[A-Za-z][A-Za-z0-9_.]*$", 
+                                    flags=0,
+                                    message="Usernames must have only letters, numbers, dots or underscores",
+                                    )
                                 ]
                             )
     message     =   TextAreaField("Leave a Message", validators=[Optional()])
-    confirm     =   BooleanField("I have agreed to our Terms of Service",
+    confirm     =   BooleanField("I have agreed to the Terms of Service",
                                  validators=[
                                      InputRequired("You must agree to the Terms of Service"),
                                     ])
     submit      =   SubmitButtonField("Sign")
+
+# ADMIN
+class LoginForm(FlaskForm):
+    username    =   StringField("Username",     validators=[InputRequired()])
+    password    =   PasswordField("Password",   validators=[InputRequired()])
+    rememberme  =   BooleanField("Remember Me")
+    submit      =   SubmitButtonField("Login")
+
+
+class AdminRemoveForm(FlaskForm):
+    id          =   StringField("Entry ID",
+        validators=[
+            DataRequired("No ID provided!"),
+            Regexp(
+                regex="^[0-9]*$",
+                message=f"ID not valid!"
+            ),
+            guestbook_exists
+        ]
+    )
+    submit      =   SubmitButtonField("Remove")
+
+
+class AdminBanForm(FlaskForm):
+    ip          =   StringField("IP Address",
+        validators=[
+            IPAddress(message="Not a valid IP address!"),
+            InputRequired('No IP entered!')
+            # OptionalIf('mac')
+
+        ]
+    )
+    # mac          =   StringField("MAC Address",
+    #     validators=[
+    #         MacAddress(message="Not a valid MAC address!"),
+    #         OptionalIf('ip')
+
+    #     ]
+    # )
+    submit      =   SubmitButtonField("Ban")
+
+
+class AdminUnbanForm(FlaskForm):
+    ip          =   StringField("IP Address",
+        validators=[
+            IPAddress(message="Not a valid IP address!"),
+            InputRequired('No IP entered!')
+
+        ]
+    )
+    submit      =   SubmitButtonField("Unban")

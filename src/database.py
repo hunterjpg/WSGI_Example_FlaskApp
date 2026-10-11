@@ -1,13 +1,14 @@
 # DB object definitions
 
-from flask_sqlalchemy import SQLAlchemy
 from flask import abort
-from sqlalchemy import ForeignKey, String, select, DateTime, UniqueConstraint, asc, desc
 from datetime import datetime, timezone, timedelta
+from typing import Optional, List
+from flask_login import UserMixin, AnonymousUserMixin
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import ForeignKey, String, select, DateTime, UniqueConstraint, asc, desc
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, defer, undefer, relationship, selectin_polymorphic
 from sqlalchemy.ext.declarative import declared_attr
-from typing import Optional, List
-
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # ---- BASE MODEL and DB SETUP---- #
 class Base(DeclarativeBase):
@@ -15,6 +16,11 @@ class Base(DeclarativeBase):
     pass
 db = SQLAlchemy(model_class=Base)
 
+
+class AnonymousUser(AnonymousUserMixin):
+    def __init__(self):
+        self.username = 'Anonymous'
+        self.name = 'Anonymous'
 
 # ---- CUSTOM MIXINS ---- #
 class TimestampMixin:
@@ -59,8 +65,104 @@ class MetaData(db.Model):
             m = db.session.query(MetaData).first()
             print(f'Metadata: Single entry created:\n{m}') 
 
+# # ADMIN
+
+class User(UserMixin, TimestampMixin, db.Model):
+    '''Base `User` model.
+    Deferred groups: 'login', 'metadata', 'forum' '''
+    __tablename__ = 'user'
+    id:             Mapped[int]         = mapped_column(primary_key=True, unique=True)
+    name:           Mapped[str]         = mapped_column(String(24), unique=True)
+    password_hash:  Mapped[str]         = mapped_column(String(128), nullable=False, deferred=True)
+    is_logged_in:   Mapped[bool]        = mapped_column(default=False)
+
+    def get(self) -> User:
+        return self
+    
+    def get_id(self) -> int:
+        return self.id
+    
+    def get_name(self) -> str:
+        return self.name
+
+    def set_password(self, password: str | None):
+        if not password:
+            raise ValueError("password must be a valid 'str'")
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password: str) -> bool:
+        return check_password_hash(self.password_hash, password)
+
+    @property
+    def is_authenticated(self):
+        '''Is the user logged in'''
+        return super().is_authenticated
+    
+    @property
+    def is_active(self):
+        '''Is the user valid (activated, not deactivated) and able to log in'''
+        # Returns false if this user is banned or deleted, disallowing logins
+        return super().is_active
+    
+    @property
+    def is_anonymous(self):
+        return super().is_anonymous
+    
+
+
+class BannedAddress(db.Model, TimestampMixin):
+    '''Banned IP/MAC Addresses'''
+    __tablename__ = 'banned_address'
+    id:         Mapped[int]     = mapped_column(primary_key=True, autoincrement=True)
+    ip:         Mapped[str]     = mapped_column(String(12), unique=True, nullable=False) #,nullable=True)
+    # mac:        Mapped[str]     = mapped_column(String(17), nullable=True, unique=True)
+
 
 # ---- Query Funcs ---- #
+
+# -- Admin -- #
+# IP
+def ban_ip(ip: str):
+    banned = BannedAddress()
+    banned.ip = ip
+    db.session.add(banned)
+    db.session.commit()
+
+def unban_ip(ip: str):
+    stmt = select(BannedAddress).where(BannedAddress.ip == ip)
+    banned_ip = db.session.execute(stmt).scalar_one_or_none()
+    if not banned_ip:
+        return
+    db.session.delete(banned_ip)
+    db.session.commit()
+
+def get_banned_ips(ip_list: bool = False):
+    if ip_list:
+        stmt = select(BannedAddress.ip)#.where(BannedAddress.ip != None)
+    else:    
+        stmt = select(BannedAddress).order_by(BannedAddress.id)#.where(BannedAddress.ip != None)
+    return db.session.execute(stmt).scalars().all()
+
+# MAC
+# def ban_mac(mac: str):
+#     banned = BannedAddress()
+#     banned.mac = mac
+#     db.session.add(banned)
+#     db.session.commit()
+
+# def unban_mac(mac: str):
+#     stmt = select(BannedAddress).where(BannedAddress.mac == mac)
+#     banned_mac = db.session.execute(stmt).scalar_one_or_none()
+#     if not banned_mac:
+#         return
+#     db.session.delete(banned_mac)
+#     db.session.commit()
+
+# def get_banned_macs():
+#     stmt = select(BannedAddress).where(BannedAddress.mac != None)
+#     return db.session.execute(stmt).scalars().all()
+
+
 
 # - MetaData - #
 def get_meta() -> MetaData:
@@ -72,10 +174,9 @@ def get_meta() -> MetaData:
     '''
     return db.session.execute(select(MetaData)).scalar_one()
 
-
-def get_hitcount() -> int | None:
-    stmt = select(MetaData.hitcount).options(undefer(MetaData.hitcount))
-    return db.session.execute(stmt).scalar()
+def get_hitcount() -> int:
+    stmt = select(MetaData.hitcount)
+    return db.session.execute(stmt).scalar_one()
 
 
 def increment_hitcount():
@@ -103,7 +204,7 @@ def recent_guestbooks(n: int):
 
 
 def guestbook_by_id(id: int | None) -> GuestbookEntry | None:
-    '''Return one UserData matching `UserData.id` or None'''
+    '''Return one GuestbookEntry matching `GuestbookEntry.id` or None'''
     if not id: return None
     stmt = select(GuestbookEntry).where(GuestbookEntry.id == id)
     return db.session.execute(stmt).scalar()

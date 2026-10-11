@@ -65,41 +65,43 @@
                 <div class="primary drop-shadow">
                     <h1 id="welcome" class="nav-heading"><a href="#welcome">{{ self.title() }}</a></h1>
                 </div>
-
-                <div class="aerobox-wrapper drop-shadow">
-                    <div class="aerobox-top secondary">
-                        <h3>Guestbook</h3>
-                    </div>
-                    <div class="aerobox-mid-bottom items-center">
-                        <h4>Sign Our <a href="{{ url_for('main.guestbook') }}">Guestbook!</a></h4>
-                    </div>
-                </div>
     
-                <div class="flex-row-wrapper">
-
-                    <div class="aerobox-wrapper drop-shadow" style="flex: 0 1 auto;">
-                        <div class="aerobox-top secondary">
-                            <h3>Welcome!</h3>
-                        </div>
-                        <div class="aerobox-mid-bottom" style="text-indent: 14px;">
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Maecenas a enim quis justo interdum hendrerit.
-                                Vestibulum viverra consequat augue et bibendum.
-                                Nullam accumsan urna sit amet metus facilisis, et dignissim sapien fringilla.
-                                Aenean augue turpis, tristique semper convallis et, suscipit ac arcu.
-
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                Maecenas a enim quis justo interdum hendrerit.
-                                Vestibulum viverra consequat augue et bibendum.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="flex-column-wrapper self-center">
+                <div class="flex-row-wrapper" style="align-items: stretch;">
+                    <div class="flex-column-wrapper self-center shrink">
                         <img class="img-profile img-responsive drop-shadow" src="{{ url_for('static', filename='img/elements/index_placeholder.png') }}" alt="" title="">
                     </div>
 
+                    <div class="flex-column-wrapper self-center grow" style="align-self: stretch;">
+
+                        <div class="aerobox-wrapper drop-shadow grow">
+                            <div class="aerobox-top secondary">
+                                <h3>Welcome!</h3>
+                            </div>
+                            <div class="aerobox-mid-bottom">
+                                <div class="wavy-text-wrapper">
+                                    {% set delay = 0.10 %}
+                                    {% for n in hitcount %}
+                                        {% if loop.first %}
+                                            <span style="animation-delay:0.00s">{{n|e}}</span>
+                                        {% else %}
+                                            {% set delay = delay * loop.index %}
+                                            <span style="animation-delay:{{ delay }}s;">{{n|e}}</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="aerobox-wrapper drop-shadow grow">
+                            <div class="aerobox-top secondary">
+                                <h3>Guestbook</h3>
+                            </div>
+                            <div class="aerobox-mid-bottom items-center">
+                                <h4>Sign Our <a href="{{ url_for('main.guestbook') }}">Guestbook!</a></h4>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </section>
 
@@ -133,9 +135,6 @@
                             <div id="tabTwo" class="tab content-center" onclick="openTab('Two', 'tabTwo')" selected="false">
                                 <h3>GitHub</h3>
                             </div>
-                            <div id="tabThree" class="tab content-center" onclick="openTab('Three', 'tabThree')" selected="false">
-                                <h3>Social Media</h3>
-                            </div>
                         </div>
                         <!-- Contact -->
                         <div id="One" class="aerobox-bottom tab-content flex-column-wrapper" style="display: inherit;">
@@ -153,21 +152,14 @@
                             </ul>
                         </div>
                         <!-- GitHub -->
-                        <div id="Two" class="aerobox-bottom tab-content" style="display: none;">
-                            <p>
-                                <a href="https://https://github.com/hunterjpg/WSGI_Example_FlaskApp">
-                                    Find this example project on GitHub!
-                                </a>
+                        <div id="Two" class="aerobox-bottom tab-content flex-column-wrapper" style="display: none;">
+                            <h4>Project Source</h4>
+                            <ul>
+                                <li><a href="https://https://github.com/hunterjpg/WSGI_Example_FlaskApp">
+                                    Find this project on GitHub
+                                </a></li>
                             </p>
                         </div>
-                        <!-- Socials -->
-                        <div id="Three" class="aerobox-bottom tab-content" style="display: none;">
-                            <p>
-                                I don't use that crap,<br>
-                                And you shouldn't either!
-                            </p>
-                        </div>
-                    </div>
 
                 </div>
             </section>

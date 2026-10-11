@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type= "text/css" href= "{{ url_for('static',filename='style/forms.css') }}">
+{% endblock %}
+
+{% block title %}Login{% endblock %}
+
+{% block main %}
+    <div class="flex-column-wrapper">
+        <section class="self-center items-center secondary" style="max-width: 25rem; min-width:min-content;">
+            <hgroup class="primary drop-shadow" style="align-self: stretch;">
+                <h2>{{ self.title() }}</h2>
+            </hgroup>
+            {% from 'macros.html' import get_message %}
+            {{ get_message() }}
+            <form 
+                id="login_form"
+                action="{{url_for('main.login')}}" 
+                method="POST"
+                enctype="multipart/form-data"
+                class="flex-column-wrapper primary drop-shadow">
+                {{ form.hidden_tag() }}
+                <div class="flex-column-wrapper">
+                    {{ form.username.label }}
+                    {{ form.username(placeholder="Username", autocomplete="username", autofocus=True) }}
+                </div>
+
+                <div class="flex-column-wrapper" style="margin-top: 1em;">
+                    {{ form.password.label }}
+                    {{ form.password }}
+                </div>
+
+                <div class="grid-checkbox-wrapper" style="margin-top: 1em;">
+                    {{ form.rememberme.label }}
+                    {{ form.rememberme }}
+                </div>    
+
+                <div style="margin-top: 1.5rem;">
+                    {{ form.submit(style="font-size: 1.5rem;") }}
+                </div>
+            </form>
+        </section>
+
+    </div>
+{% endblock %}

@@ -48,13 +48,13 @@ semanage fcontext -a -t httpd_sys_rw_content_t "/var/www/flask_wsgi/src/static(/
 restorecon -Rv /var/www/flask_wsgi/src/static
 
 # System Files
-if ! [[ -e /etc/nginx/conf.d/nginx_proxy.conf ]]; then
+if ! [[ -e /etc/nginx/conf.d/flask_wsgi.conf ]]; then
     echo "Adding configurations to NGINX..."
-    cat "$(dirname "$0")/system/nginx_proxy.conf" > /etc/nginx/conf.d/nginx_proxy.conf
+    cat "$(dirname "$0")/system/nginx_proxy.conf" > /etc/nginx/conf.d/flask_wsgi.conf
     # chown nginx:nginx /etc/nginx/conf.d/nginx_proxy.conf
 fi
 
-if ! [[ -e /etc/systemd/system/flask.service ]]; then
+if ! [[ -e /etc/systemd/system/flask_wsgi.service ]]; then
     echo -n "Creating flask_wsgi.service..."
     cat "$(dirname "$0")/system/flask_wsgi.service" > /etc/systemd/system/flask_wsgi.service
     systemctl daemon-reload

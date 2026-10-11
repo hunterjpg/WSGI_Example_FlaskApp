@@ -916,6 +916,22 @@ picture {
     font-weight: 600;
 } */
 
+/* Animations */
+@keyframes waveLetter {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-6px) rotate(-4deg); }
+  75% { transform: translateY(6px) rotate(4deg); }
+}
+.wavy-text-wrapper {
+    font-size: 32px;
+    color: var(--link-visited-color);
+    font-family:sans-serif;
+}
+.wavy-text-wrapper span {
+    display: inline-block;
+    animation: waveLetter 1.4s ease-in-out infinite;
+}
+
 /* ------------------- */
 /* RESPONSIVE ELEMENTS */
 /* ------------------- */
