@@ -9,9 +9,8 @@ Group=nginx
 WorkingDirectory=/var/www/flask_wsgi
 Environment=/var/www/flask_wsgi/.venv/bin
 ExecStartPre=/usr/bin/bash /var/www/flask_wsgi/run.sh
-ExecStart=/var/www/flask_wsgi/.venv/bin/uwsgi --ini wsgi.ini 
+ExecStart=/var/www/flask_wsgi/.venv/bin/uwsgi --ini /var/www/flask_wsgi/wsgi.ini 
 ExecReload=/var/www/flask_wsgi/.venv/bin/uwsgi --stop --no-orphans
-TimeoutStartSec=1
 
 [Install]
 WantedBy=multi-user.target

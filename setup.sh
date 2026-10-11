@@ -35,12 +35,13 @@ usermod flask -aG nginx
 
 # Log Setup
 echo -n "Setting up logging..."
-mkdir -p /var/log/nginx/flask/ --mode=711
+mkdir -p /var/log/flask_wsgi/ --mode=711
 touch /var/log/flask_wsgi/app.log
 touch /var/log/flask_wsgi/access.log
 touch /var/log/flask_wsgi/error.log
 # Selinux - Logging
 semanage fcontext -a -t httpd_log_t "/var/log/flask_wsgi(/.*)?"
+semanage fcontext -a -t httpd_sys_rw_content_t "/var/log/flask_wsgi(/.*)?"
 restorecon -Rv /var/log/flask_wsgi
 
 # Selinux - Static Files
