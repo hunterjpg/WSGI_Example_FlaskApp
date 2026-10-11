@@ -8,7 +8,8 @@ User=flask
 Group=nginx
 WorkingDirectory=/var/www/flask_wsgi
 Environment=/var/www/flask_wsgi/.venv/bin
-ExecStart=/usr/bin/bash /var/www/flask_wsgi/run.sh
+ExecStartPre=/usr/bin/bash /var/www/flask_wsgi/run.sh
+ExecStart=/var/www/flask_wsgi/.venv/bin/uwsgi --ini wsgi.ini 
 ExecReload=/var/www/flask_wsgi/.venv/bin/uwsgi --stop --no-orphans
 TimeoutStartSec=1
 
