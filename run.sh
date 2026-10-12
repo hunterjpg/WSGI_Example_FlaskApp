@@ -12,7 +12,7 @@ set -e
 
 cd "$(dirname "$0")"
 
-source "$(dirname "$0")/.venv/bin/activate"
+source venv/bin/activate
 
 # EXPORTS
 # See https://flask.palletsprojects.com/en/stable/config/ for info on setting via environment variables
