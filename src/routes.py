@@ -1,4 +1,4 @@
-# Main Routes
+'''Main Routes'''
 
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash, abort, current_app
 from flask_login import current_user, fresh_login_required, login_required, login_user, logout_user
@@ -23,7 +23,7 @@ def index():
 
 @bp.route('/guestbook', methods=['GET', 'POST'])
 def guestbook():
-    guestbooks = all_guestbooks(paginate=False)
+    guestbooks = list.reverse all_guestbooks()
     return render_template('guestbook.html', guestbooks=guestbooks)
 
 
@@ -50,7 +50,7 @@ def sign_guestbook():
         db.session.commit()
         current_app.logger.info(f'New Guestbook:\n\tName: {form.name.data}\n\tIP: {request.remote_addr}\n\tMessage:\n{form.message.data}')
         flash(f"Thank you for signing our guestbook!<br>Click <a href='{url_for('main.index')}'>here</a> to go back home.")
-        return redirect(url_for('main.guestbook'))
+        return redirect(url_for(endpoint='main.guestbook', _anchor='bottom'))
     elif request.method == 'GET':
         return render_template('sign_guestbook.html', form=form)
     else:

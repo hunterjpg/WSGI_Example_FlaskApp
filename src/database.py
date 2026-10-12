@@ -1,4 +1,4 @@
-# DB object definitions
+'''DB object definitions for SQLAlchemy with sqlite'''
 
 from flask import abort
 from datetime import datetime, timezone, timedelta
@@ -189,12 +189,9 @@ def increment_hitcount():
 
 
 # -- Guestbook -- #
-def all_guestbooks(paginate: bool = False):
+def all_guestbooks():
     '''All guestbook entries sorted by date, optionally paginated'''
     stmt = select(GuestbookEntry).order_by(GuestbookEntry.id)
-    # More info on using a pagination: https://flask-sqlalchemy.readthedocs.io/en/stable/pagination/
-    if paginate:
-        return db.paginate(stmt)
     return db.session.execute(stmt).scalars().all()
 
 def recent_guestbooks(n: int):

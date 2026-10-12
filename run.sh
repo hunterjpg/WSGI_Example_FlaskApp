@@ -10,8 +10,6 @@
 #set -o errexit
 set -e 
 
-echo -n "Starting Server..."
-
 cd "$(dirname "$0")"
 
 source "$(dirname "$0")/.venv/bin/activate"
@@ -22,11 +20,10 @@ source "$(dirname "$0")/.venv/bin/activate"
 #export FLASK_SECRET_KEY=""
 #export FLASK_RUN_PORT=443
 export FLASK_MAIL_ENABLED=false
-export FLASK_SERVER_NAME="$(hostname)"
+export FLASK_SERVER_NAME="horseworld.ca"
 # CUSTOM CONFIG
 # Choose one of (CONFIG_DEFAULT, CONFIG_TESTING, CONFIG_DEBUG, CONFIG_PRODUCTION)
 export CONFIG_MODE="CONFIG_PRODUCTION"
 
-/var/www/flask_wsgi/.venv/bin/uwsgi --ini wsgi.ini 1>/dev/null 2>/dev/null
-
-echo -n "Server Started..."
+# /var/www/flask_wsgi/.venv/bin/uwsgi --ini wsgi.ini 1>/dev/null 2>/dev/null
+/var/www/flask_wsgi/.venv/bin/uwsgi --ini wsgi.ini

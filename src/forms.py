@@ -1,4 +1,5 @@
-# Flask Forms
+'''Flask Forms Setup'''
+
 from flask_wtf import FlaskForm
 from wtforms import (StringField, Field, HiddenField, TextAreaField,
                       BooleanField, SelectField, PasswordField, ValidationError)
@@ -41,7 +42,7 @@ def name_not_taken(form: FlaskForm, field: StringField):
     if not field.data: 
         raise ValidationError(f"A Username is Required!")
     if guestbook_by_name(field.data):
-        raise ValidationError(f"'{field.data}' is already taken!")
+        raise ValidationError(f"The name '{field.data}' is already taken!")
 
 
 def guestbook_exists(form: FlaskForm, field: StringField):
@@ -111,9 +112,9 @@ class GuestbookForm(FlaskForm):
                                 name_not_taken,
                                 InputRequired('A Username is Required!'),
                                 Regexp(
-                                    regex="^[A-Za-z][A-Za-z0-9_.]*$", 
+                                    regex="^(?=.{5,32}$)[a-zA-Z0-9._~]*$", 
                                     flags=0,
-                                    message="Usernames must have only letters, numbers, dots or underscores",
+                                    message="Usernames must be at least 5 characters and have only letters, numbers, dots or underscores",
                                     )
                                 ]
                             )
