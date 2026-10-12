@@ -8,8 +8,7 @@ Type=simple
 User=flask
 Group=nginx
 WorkingDirectory=/var/www/flask_wsgi
-Environment=/var/www/flask_wsgi/.venv/bin
-# Environment="PATH=$PATH:/var/www/flask_wsgi/.venv/bin"
+Environment="PATH=$PATH:/var/www/flask_wsgi/.venv/bin"
 # ExecStartPre=rm -f /run/flask_wsgi.pid
 ExecStart=/usr/bin/bash /var/www/flask_wsgi/run.sh
 # ExecStart=/var/www/flask_wsgi/.venv/bin/uwsgi --ini /var/www/flask_wsgi/wsgi.ini 
