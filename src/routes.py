@@ -23,7 +23,7 @@ def index():
 
 @bp.route('/guestbook', methods=['GET', 'POST'])
 def guestbook():
-    guestbooks = list.reverse all_guestbooks()
+    guestbooks = all_guestbooks()
     return render_template('guestbook.html', guestbooks=guestbooks)
 
 
