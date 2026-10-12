@@ -14,17 +14,17 @@
                 <h2>{{ self.title() }}</h2>
             </hgroup>
             {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <div class="primary drop-shadow">                        
-                        <div class="{{ messages[0][0] }}">
-                            <span>{{ messages[0][1]|safe }}</span>
-                        </div>
+            <div class="primary drop-shadow">
+                {% if messages is defined and messages|length %} 
+                    <div class="{{ messages[0][0] }}">
+                        <span>{{ messages[0][1]|safe }}</span>
                     </div>
-                { else }
-                    <div class="primary drop-shadow">
-                        <span><a href="{{ url_for('main.sign_guestbook') }}">Click Here</a> to sign our Guestbook!</span>
-                    </div>
+                {% else %}
+                    <span>
+                        <a href="{{ url_for('main.sign_guestbook') }}">Click Here</a> to sign our Guestbook!
+                    </span>
                 {% endif %}
+            </div>
             {% endwith %}
         </section>
 

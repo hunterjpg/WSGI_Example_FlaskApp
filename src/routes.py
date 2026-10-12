@@ -1,14 +1,15 @@
 '''Main Routes'''
 
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash, abort, current_app
-from flask_login import current_user, fresh_login_required, login_required, login_user, logout_user
+from flask import (Blueprint, render_template, request,
+                    redirect, url_for, flash, abort, current_app)
+from flask_login import (current_user, fresh_login_required,
+                          login_required, login_user, logout_user)
 from sqlalchemy.orm import undefer
 from .util import JinjaUtils, ordinal
 from .database import (db, guestbook_by_id, all_guestbooks, select, get_hitcount,
                         increment_hitcount, get_banned_ips, GuestbookEntry,
-                        ban_ip, unban_ip, recent_guestbooks, BannedAddress, User)
+                        ban_ip, unban_ip, User)
 from .forms import GuestbookForm, LoginForm, AdminRemoveForm, AdminBanForm, AdminUnbanForm
-from wtforms import ValidationError
 
 #DEFAULT_PROFILE_IMAGE = 'static/img/profile_default.png'
 
@@ -24,6 +25,8 @@ def index():
 @bp.route('/guestbook', methods=['GET', 'POST'])
 def guestbook():
     guestbooks = all_guestbooks()
+    # print(get_flashed_messages(with_categories=True))
+    print(f"QS: {request.base_url}")
     return render_template('guestbook.html', guestbooks=guestbooks)
 
 
@@ -125,7 +128,7 @@ def admin():
         flash('Not logged in', JinjaUtils.ERROR)
         abort(403)
     
-    guestbooks = all_guestbooks(paginate=False)
+    guestbooks = all_guestbooks()
     banned_ips = get_banned_ips()
     remove_form = AdminRemoveForm()
     ban_form = AdminBanForm()

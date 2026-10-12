@@ -112,9 +112,9 @@ class GuestbookForm(FlaskForm):
                                 name_not_taken,
                                 InputRequired('A Username is Required!'),
                                 Regexp(
-                                    regex="^(?=.{5,32}$)[a-zA-Z0-9._~]*$", 
+                                    regex="^(?=.{2,32}$)[a-zA-Z0-9._~]*$", 
                                     flags=0,
-                                    message="Usernames must be at least 5 characters and have only letters, numbers, dots or underscores",
+                                    message="Usernames must be 2-32 characters and have only letters, numbers, dots or underscores",
                                     )
                                 ]
                             )
