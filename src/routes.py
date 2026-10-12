@@ -26,7 +26,7 @@ def index():
 def guestbook():
     guestbooks = all_guestbooks()
     # print(get_flashed_messages(with_categories=True))
-    print(f"QS: {request.base_url}")
+    # print(f"QS: {request.base_url}")
     return render_template('guestbook.html', guestbooks=guestbooks)
 
 
