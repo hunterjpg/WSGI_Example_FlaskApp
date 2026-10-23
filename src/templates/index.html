@@ -14,7 +14,7 @@
     <span style="display: none;">{{ get_flashed_messages() }}</span>
 {% endblock header %}
 
-{%block main%}
+{% block main %}
     <div class="flex-row-wrapper">
         <div class="sidebar secondary">
             <section>
@@ -173,8 +173,8 @@
         </div>
     </div>
 
-{% endblock %}
+{% endblock main %}
 
 {% block footer %}
     {{ super() }}
-{% endblock %}
+{% endblock footer %}

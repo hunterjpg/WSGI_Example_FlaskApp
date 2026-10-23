@@ -12,7 +12,7 @@ set -e
 
 cd "$(dirname "$0")"
 
-source venv/bin/activate
+source .venv/bin/activate
 
 # EXPORTS
 # See https://flask.palletsprojects.com/en/stable/config/ for info on setting via environment variables
@@ -20,10 +20,10 @@ source venv/bin/activate
 #export FLASK_SECRET_KEY=""
 #export FLASK_RUN_PORT=443
 export FLASK_MAIL_ENABLED=false
-export FLASK_SERVER_NAME="horseworld.ca"
+export FLASK_SERVER_NAME="app.horseworld.ca"
 # CUSTOM CONFIG
 # Choose one of (CONFIG_DEFAULT, CONFIG_TESTING, CONFIG_DEBUG, CONFIG_PRODUCTION)
 export CONFIG_MODE="CONFIG_PRODUCTION"
 
-# /var/www/flask_wsgi/.venv/bin/uwsgi --ini wsgi.ini 1>/dev/null 2>/dev/null
-/var/www/flask_wsgi/.venv/bin/uwsgi --ini wsgi.ini
+# $(pwd)/.venv/bin/uwsgi --ini wsgi.ini 1>/dev/null 2>/dev/null
+.venv/bin/uwsgi --ini wsgi.ini
