@@ -93,6 +93,7 @@ fi
 #     systemctl daemon-reload
 #     systemctl enable flask_wsgi
 # fi
+if ! [[ -e /etc/systemd/system/flask_wsgi.service ]]; then
 cat > "/etc/systemd/system/flask_wsgi.service" <<EOL
 [Unit]
 Description=Flask-WSGI Webserver
