@@ -18,41 +18,80 @@
     <div class="flex-row-wrapper">
         <div class="sidebar secondary">
             <section>
-                <h2 class="primary">Links</h2>
+                <h2 class="primary">Sitemap</h2>
+
                 <div class="primary flex-column-wrapper">
                     <div class="flex-column-wrapper">
-                        <h3 style="text-align: center;">Site Index</h3>
+                        <h3 style="text-align: center;">Apache Site Index</h3>
                         <hr style="width: 85%;">
-                        <ul>
-                            <li><a href="{{ url_for('main.index') }}">Front Page</a></li>
-                            <li><a href="#">News</a></li>
-                            <li><a href="#">Placeholder</a></li>                                                                                
-                        </ul>
+                        <ol>
+                            <li>
+                                <a href="http://horseworld.ca">Front Page</a>
+                                <p>Apache portal page site.</p>
+                            </li>
+                            <li>
+                                <a href="http://files.horseworld.ca">Files</a>
+                                <p>Apache public and private file directories.</p>
+                            </li>
+                            <li>
+                                <a href="http://users.horseworld.ca">User Directory</a>
+                                <p>Apache user directories.</p>
+                            </li>
+                            <li>
+                                <a href="http://info.horseworld.ca">Diagnostic Info</a>
+                                <p>Apache status site.</p>
+                            </li>
+                            <li>
+                                <a href="https://secure.horseworld.ca">HTTPS Site</a>
+                                <p>Apache TLS intranet site.</p>
+                            </li>
+                            <li>
+                                <a href="http://php.horseworld.ca">PHP Site</a>
+                                <p>Apache PHP site.</p>
+                            </li>
+                        </ol>
                     </div>
                 </div>
-                <div class="flex-column-wrapper">
-                    <div class="primary flex-column-wrapper">
-                        <div class="flex-column-wrapper">
-                            <h3 style="text-align: center;">Neat Websites</h3>
-                            <hr style="width: 85%;">
-                            <ul>
-                                <li>
-                                    <a href="https://www.random.org">random.org</a>
-                                    <p>A go-to website for random generation</p></li>
-                                <li>
-                                    <a href="https://donjon.bin.sh">donjon.bin.sh</a>
-                                    <p >More fun random generation tools</p></li>
-                                <li>
-                                    <a href="http://tom7.org">tom7.org</a>
-                                    <p>Interesting and impractical math and programming projects</p>
-                                </li>
-                                <li>
-                                    <a href="https://www.androidarts.com">androidarts.com</a>
-                                    <p>A very interesting showcase of game development and art projects</p>
-                                </li>
-                            </ul>
-                        </div>
 
+                <div class="primary flex-column-wrapper">
+                    <div class="flex-column-wrapper">
+                        <h3 style="text-align: center;">Nginx Site Index</h3>
+                        <hr style="width: 85%;">
+                        <ol>
+                            <li>
+                                <a href="http://www.horseworld.ca">Front Page</a>
+                                <p>Nginx front page site.</p>
+                            </li>
+                            <li>
+                                <a href="http://restricted.horseworld.ca">Hidden Site</a>
+                                <p>Nginx intranet-only site.</p>
+                            </li>
+                            <li>
+                                <a href="https://admin.horseworld.ca">Admins Only!</a>
+                                <p>Nginx TLS login-authenticated site.</p>
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="primary flex-column-wrapper">
+                    <div class="flex-column-wrapper">
+                        <h3 style="text-align: center;">Extra Sites</h3>
+                        <hr style="width: 85%;">
+                        <ol>
+                            <li>
+                                <a href="http://blog.horseworld.ca">User Blogs</a>
+                                <p>Apache site serving HTML and Markdown files in user directories.</p>
+                            </li>
+                            <li>
+                                <a href="https://app.horseworld.ca">Webapp</a>
+                                <p>Nginx reverse proxy site, serving a webapp hosted on Apache.</p>
+                            </li>
+                            <li>
+                                <a href="http://liveblog.horseworld.ca">Reverse Proxy Blogsite</a>
+                                <p>Nginx reverse proxy site, serving a static site hosted on Apache.</p>
+                            </li>
+                        </ol>
                     </div>
                 </div>
             </section>
