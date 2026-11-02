@@ -97,7 +97,7 @@ if ! [[ -e /etc/systemd/system/flask_wsgi.service ]]; then
 cat > "/etc/systemd/system/flask_wsgi.service" <<EOL
 [Unit]
 Description=Flask-WSGI Webserver
-After=network.target
+After=network-online.target
 
 [Service]
 Type=simple

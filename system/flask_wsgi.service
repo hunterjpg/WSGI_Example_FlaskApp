@@ -1,6 +1,6 @@
 [Unit]
 Description=Flask-WSGI Webserver
-After=network.target
+After=network-online.target
 
 [Service]
 Type=simple
