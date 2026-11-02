@@ -244,7 +244,7 @@ def redir():
 def health():
     #TODO: make a better WSOCK route for remote health checking that returns some basic data (uptime, server load, disk stats, etc)
     # Maybe move this to `api`
-    return jsonify({'status', 'OK'})
+    return jsonify({'status': 'OK'})
 
 @app.route('/status')
 def status():
