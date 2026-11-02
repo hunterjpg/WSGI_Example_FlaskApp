@@ -3,7 +3,7 @@ Created by Hunter M
 '''
 
 from flask import (Flask, render_template, request,
-                   redirect, url_for, session, flash,
+                   redirect, url_for, session, flash, jsonify,
                    abort, make_response, send_from_directory)
 from logging.config import dictConfig
 
@@ -237,15 +237,18 @@ def redirect_to(ref: str = ''):
 
 @app.route('/redirect/')
 def redir():
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))
 
 
-@app.route('/health/', websocket=True,  methods=['GET', 'HEAD'])
+@app.route('/health', methods=['GET', 'HEAD'])
 def health():
     #TODO: make a better WSOCK route for remote health checking that returns some basic data (uptime, server load, disk stats, etc)
     # Maybe move this to `api`
-    return 'OK', 200
+    return jsonify({'status', 'OK'})
 
+@app.route('/status')
+def status():
+    return redirect(url_for('health'))
 
 
 @app.get('/admin/seed')
