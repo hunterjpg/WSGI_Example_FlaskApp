@@ -242,13 +242,11 @@ def redir():
 
 @app.route('/health', methods=['GET', 'HEAD'])
 def health():
-    #TODO: make a better WSOCK route for remote health checking that returns some basic data (uptime, server load, disk stats, etc)
-    # Maybe move this to `api`
     return jsonify({'status': 'OK'})
 
 @app.route('/status')
 def status():
-    return redirect(url_for('health'))
+    return 'OK', 200
 
 
 @app.get('/admin/seed')
