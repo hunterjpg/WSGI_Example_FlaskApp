@@ -187,9 +187,9 @@ def create_app() -> Flask:
     _app = Flask(__name__)
     ## Apply .conf file
     init_config(_app)
-    # Create DB Dirs
+    # Create DB/upload/instance Dirs
     setup_dirs(_app)
-    # Register blueprints
+    # Register Blueprints
     from . import routes
     _app.register_blueprint(routes.bp)
     # Inits
@@ -201,7 +201,6 @@ def create_app() -> Flask:
         app_debug(_app)
     elif _app.config['TESTING']:
         _app.wsgi_app = WSGITestMiddleware(_app) #TEST WSGI
-        # init_wsgi(_app)
     else:
         init_wsgi(_app)
     # Jinja2 Extensions
